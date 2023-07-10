@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+    <graph id="G" edgedefault="directed">
+        <node id="A"/>
+        <node id="B"/>
+        <node id="C"/>
+        <node id="D"/>
+        <node id="E"/>
+        <node id="F"/>
+        <node id="G"/>
+        <node id="H"/>
+        <node id="I"/>
+        <edge source="A" target="B"/>
+        <edge source="A" target="C"/>
+        <edge source="B" target="D"/>
+        <edge source="B" target="E"/>
+        <edge source="C" target="F"/>
+        <edge source="C" target="G"/>
+        <edge source="D" target="H"/>
+        <edge source="D" target="I"/>
+    </graph>
+</graphml>

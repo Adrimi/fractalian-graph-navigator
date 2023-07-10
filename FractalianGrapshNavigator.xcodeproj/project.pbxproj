@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A2CD3522A5C83AB00D0F2F8 /* graph_max.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */; };
 		3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */; };
 		3A91C5D72A5BF41E009D6D93 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D62A5BF41E009D6D93 /* ContentView.swift */; };
 		3A91C5D92A5BF420009D6D93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C5D82A5BF420009D6D93 /* Assets.xcassets */; };
@@ -14,6 +15,10 @@
 		3A91C5E72A5BF421009D6D93 /* FractalianGrapshNavigatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5E62A5BF421009D6D93 /* FractalianGrapshNavigatorTests.swift */; };
 		3A91C5F12A5BF421009D6D93 /* FractalianGrapshNavigatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5F02A5BF421009D6D93 /* FractalianGrapshNavigatorUITests.swift */; };
 		3A91C5F32A5BF421009D6D93 /* FractalianGrapshNavigatorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5F22A5BF421009D6D93 /* FractalianGrapshNavigatorUITestsLaunchTests.swift */; };
+		3A91C6002A5BF444009D6D93 /* GraphViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5FF2A5BF444009D6D93 /* GraphViewModel.swift */; };
+		3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C6012A5BF468009D6D93 /* GraphView.swift */; };
+		3A91C6052A5BF535009D6D93 /* SWXMLHash in Frameworks */ = {isa = PBXBuildFile; productRef = 3A91C6042A5BF535009D6D93 /* SWXMLHash */; };
+		3A91C6072A5BF64F009D6D93 /* graph.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C6062A5BF64F009D6D93 /* graph.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = graph_max.xml; sourceTree = "<group>"; };
 		3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FractalianGrapshNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractalianGrapshNavigatorApp.swift; sourceTree = "<group>"; };
 		3A91C5D62A5BF41E009D6D93 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,6 +51,9 @@
 		3A91C5EC2A5BF421009D6D93 /* FractalianGrapshNavigatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FractalianGrapshNavigatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A91C5F02A5BF421009D6D93 /* FractalianGrapshNavigatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractalianGrapshNavigatorUITests.swift; sourceTree = "<group>"; };
 		3A91C5F22A5BF421009D6D93 /* FractalianGrapshNavigatorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractalianGrapshNavigatorUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3A91C5FF2A5BF444009D6D93 /* GraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewModel.swift; sourceTree = "<group>"; };
+		3A91C6012A5BF468009D6D93 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		3A91C6062A5BF64F009D6D93 /* graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = graph.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A91C6052A5BF535009D6D93 /* SWXMLHash in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +110,10 @@
 				3A91C5D82A5BF420009D6D93 /* Assets.xcassets */,
 				3A91C5DA2A5BF420009D6D93 /* FractalianGrapshNavigator.entitlements */,
 				3A91C5DB2A5BF420009D6D93 /* Preview Content */,
+				3A91C5FF2A5BF444009D6D93 /* GraphViewModel.swift */,
+				3A91C6012A5BF468009D6D93 /* GraphView.swift */,
+				3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */,
+				3A91C6062A5BF64F009D6D93 /* graph.xml */,
 			);
 			path = FractalianGrapshNavigator;
 			sourceTree = "<group>";
@@ -145,6 +159,9 @@
 			dependencies = (
 			);
 			name = FractalianGrapshNavigator;
+			packageProductDependencies = (
+				3A91C6042A5BF535009D6D93 /* SWXMLHash */,
+			);
 			productName = FractalianGrapshNavigator;
 			productReference = 3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +234,9 @@
 				Base,
 			);
 			mainGroup = 3A91C5C82A5BF41E009D6D93;
+			packageReferences = (
+				3A91C6032A5BF535009D6D93 /* XCRemoteSwiftPackageReference "SWXMLHash" */,
+			);
 			productRefGroup = 3A91C5D22A5BF41E009D6D93 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,8 +253,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A91C6072A5BF64F009D6D93 /* graph.xml in Resources */,
 				3A91C5DD2A5BF420009D6D93 /* Preview Assets.xcassets in Resources */,
 				3A91C5D92A5BF420009D6D93 /* Assets.xcassets in Resources */,
+				3A2CD3522A5C83AB00D0F2F8 /* graph_max.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +283,8 @@
 			files = (
 				3A91C5D72A5BF41E009D6D93 /* ContentView.swift in Sources */,
 				3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */,
+				3A91C6002A5BF444009D6D93 /* GraphViewModel.swift in Sources */,
+				3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,6 +636,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A91C6032A5BF535009D6D93 /* XCRemoteSwiftPackageReference "SWXMLHash" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/drmohundro/SWXMLHash.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A91C6042A5BF535009D6D93 /* SWXMLHash */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A91C6032A5BF535009D6D93 /* XCRemoteSwiftPackageReference "SWXMLHash" */;
+			productName = SWXMLHash;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3A91C5C92A5BF41E009D6D93 /* Project object */;
 }
