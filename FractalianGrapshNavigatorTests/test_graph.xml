@@ -10,7 +10,6 @@
         <node id="G"/>
         <node id="H"/>
         <node id="I"/>
-        <node id="J"/>
         <edge source="A" target="B"/>
         <edge source="A" target="C"/>
         <edge source="B" target="D"/>
@@ -19,9 +18,5 @@
         <edge source="C" target="G"/>
         <edge source="D" target="H"/>
         <edge source="D" target="I"/>
-        <edge source="H" target="J"/>
-        <edge source="I" target="J"/>
-        <edge source="A" target="J"/>
-        
     </graph>
 </graphml>

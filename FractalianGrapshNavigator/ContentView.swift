@@ -9,10 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationView {
-            GraphView(viewModel: .init())
-                .navigationBarTitle("Fractalian Graph Navigator")
-        }
+        GraphView(viewModel: .init())
     }
 }
 

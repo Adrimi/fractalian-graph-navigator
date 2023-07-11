@@ -12,7 +12,7 @@ struct Graph {
     var nodes: [Node] = []
 }
 
-struct Node: Equatable {
+struct Node: Hashable, Equatable {
     let id: String
     var children: [Node] = []
     var action: (() -> Void)?
@@ -25,13 +25,19 @@ struct Node: Equatable {
     static func == (lhs: Node, rhs: Node) -> Bool {
         lhs.id == rhs.id
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 class GraphViewModel: ObservableObject {
     @Published var focusedNode: Node?
+    @Published var depth: Int = 3
+    static let filename: String = "graph"
 
-    func loadGraph() {
-        guard let url = Bundle.main.url(forResource: "graph", withExtension: "xml") else {
+    func loadGraph(_ fileName: String = filename) {
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: "xml") else {
             print("GraphML file not found")
             return
         }
@@ -42,21 +48,17 @@ class GraphViewModel: ObservableObject {
 
             let graphML = xml["graphml"]
             let graphElement = graphML["graph"]
-            let nodes = graphElement["node"]
             let edges = graphElement["edge"]
 
-            // Parse only the focused node and 2-deep childrens
-            // I think I should only focus on the edges, not the nodes whatsoever
-
             if let firstID = focusedNode?.id {
-                let childrenTree = createChildrenTree(from: edges, mainNodeID: firstID)
+                let childrenTree = createChildrenTree(from: edges, mainNodeID: firstID, depth: depth)
                 focusedNode?.children = childrenTree
             } else {
                 let firstID = edges.all.first(where: { edge in
                     edge.element?.attribute(by: "source")?.text != nil
                 })!.element!.attribute(by: "source")!.text
 
-                let childrenTree = createChildrenTree(from: edges, mainNodeID: firstID)
+                let childrenTree = createChildrenTree(from: edges, mainNodeID: firstID, depth: depth)
                 let node = Node(id: firstID, children: childrenTree)
                 focusedNode = node
             }
@@ -65,15 +67,14 @@ class GraphViewModel: ObservableObject {
         }
     }
 
-    func createChildrenTree(from edges: XMLIndexer, mainNodeID: String) -> [Node] {
+    func createChildrenTree(from edges: XMLIndexer, mainNodeID: String, depth: Int) -> [Node] {
         nextTargets(from: edges, mainNodeID: mainNodeID)
             .map { parent in
-                let children = nextTargets(from: edges, mainNodeID: parent)
-                    .map { createNode($0) }
+                let children = createChildrenTree(from: edges, mainNodeID: parent, depth: depth - 1)
                 return createNode(parent, children: children)
             }
     }
-    
+
     func nextTargets(from edges: XMLIndexer, mainNodeID: String) -> [String] {
         edges
             .filterAll { elem, _ in
