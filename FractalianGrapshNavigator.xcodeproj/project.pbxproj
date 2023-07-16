@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A2CD3522A5C83AB00D0F2F8 /* graph_max.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */; };
+		3A4022182A61B7B40073329E /* EdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4022172A61B7B40073329E /* EdgesView.swift */; };
 		3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */; };
 		3A91C5D72A5BF41E009D6D93 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D62A5BF41E009D6D93 /* ContentView.swift */; };
 		3A91C5D92A5BF420009D6D93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C5D82A5BF420009D6D93 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		3A009C432A5D325200ACC7C9 /* test_graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = test_graph.xml; sourceTree = "<group>"; };
 		3A009C452A5D38BF00ACC7C9 /* FractalianGrapshNavigator.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FractalianGrapshNavigator.xctestplan; sourceTree = SOURCE_ROOT; };
 		3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = graph_max.xml; sourceTree = "<group>"; };
+		3A4022172A61B7B40073329E /* EdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgesView.swift; sourceTree = "<group>"; };
 		3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FractalianGrapshNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractalianGrapshNavigatorApp.swift; sourceTree = "<group>"; };
 		3A91C5D62A5BF41E009D6D93 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				3A91C6012A5BF468009D6D93 /* GraphView.swift */,
 				3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */,
 				3A91C6062A5BF64F009D6D93 /* graph.xml */,
+				3A4022172A61B7B40073329E /* EdgesView.swift */,
 			);
 			path = FractalianGrapshNavigator;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 			files = (
 				3A91C5D72A5BF41E009D6D93 /* ContentView.swift in Sources */,
 				3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */,
+				3A4022182A61B7B40073329E /* EdgesView.swift in Sources */,
 				3A91C6002A5BF444009D6D93 /* GraphViewModel.swift in Sources */,
 				3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */,
 			);

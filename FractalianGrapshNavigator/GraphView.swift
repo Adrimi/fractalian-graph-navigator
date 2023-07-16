@@ -9,117 +9,175 @@ import SwiftUI
 
 struct GraphView: View {
     @StateObject var viewModel: GraphViewModel
+    @State var alignment: Alignment = .topLeading
 
     var body: some View {
         VStack {
-            Button("Reset") {
-                withAnimation(.spring()) {
-                    viewModel.focusedNode = nil
-                }
-            }
-            .font(.title)
-            
-            HStack {
-                Button("-") {
+            HStack(alignment: .bottom) {
+                Button("Reset") {
                     withAnimation(.spring()) {
-                        viewModel.depth -= 1
+                        viewModel.focusedNode = nil
                     }
                 }
-                .frame(width: 40, height: 40)
-                .background(Color.red.opacity(0.3))
-                
-                Text("\(viewModel.depth)")
-                
-                Button("+") {
-                    withAnimation(.spring()) {
-                        viewModel.depth += 1
+                .buttonStyle(BorderedButtonStyle())
+
+                VStack {
+                    Text("Depth")
+
+                    HStack {
+                        Button("-") {
+                            viewModel.depth -= 1
+                        }
+                        .buttonStyle(BorderedButtonStyle())
+
+                        Text("\(viewModel.depth)")
+                            .font(.title2)
+
+                        Button("+") {
+                            viewModel.depth += 1
+                        }
+                        .buttonStyle(BorderedProminentButtonStyle())
                     }
                 }
-                .frame(width: 40, height: 40)
-                .background(Color.green.opacity(0.3))
-            }.font(.title)
 
-            ScrollView(.horizontal) {
-                columnGraph()
-                    .frame(height: 500)
-                    .padding()
+                Button(action: { withAnimation(.spring()) {
+                    alignment = alignment == .topLeading ? .leading : .topLeading
+                }}) {
+                    Text("Toggle alignment")
+                }
+                .buttonStyle(BorderedButtonStyle())
             }
-        }
-        .onAppear {
-            viewModel.loadGraph()
-        }
-        .onChange(of: viewModel.focusedNode) { node in
-            viewModel.loadGraph()
-        }
-        .onChange(of: viewModel.depth) { ned in
-            viewModel.loadGraph()
-        }
-    }
-    
-    @ViewBuilder
-    func columnGraph() -> some View {
-        HStack(spacing: 16) {
-            if let selectedNode = viewModel.focusedNode {
-                GraphItemView(node: selectedNode)
-                
-                RecursiveGraphView(nodes: selectedNode.children, depth: viewModel.depth)
-            } else {
-                Text("Loading graph")
-            }
-        }
-    }
-}
-
-struct RecursiveGraphView: View {
-    let nodes: [Node]
-    let depth: Int
-
-    @ViewBuilder
-    var body: some View {
-        if depth > 0 {
-            GraphItemGroup(nodes: nodes)
-            
-            RecursiveGraphView(nodes: nodes.flatMap(\.children).unique(), depth: depth - 1)
-        }
-    }
-}
-
-
-struct GraphItemGroup: View {
-    let nodes: [Node]
-
-    init(nodes: [Node]) {
-        self.nodes = nodes
-    }
-
-    var body: some View {
-        VStack {
-            ForEach(nodes, id: \.id) { node in
-                GraphItemView(node: node)
-                    .padding(.vertical, 16)
-            }
-        }
-    }
-}
-
-struct GraphItemView: View {
-    let node: Node
-
-    var body: some View {
-        Text(node.id)
-            .fontWeight(.bold)
-            .foregroundColor(.blue)
-            .aspectRatio(1, contentMode: .fit)
-            .padding()
+            .padding(8)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(lineWidth: 2)
+                    .fill(Color.gray.opacity(0.1))
             )
-            .onTapGesture {
-                withAnimation(.spring()) {
-                    node.action?()
-                }
+            
+
+//            ScrollView(.horizontal) {
+            columnGraph()
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.green.opacity(0.15))
+//            }
+        }
+        .onChange(of: viewModel.nodePositions, perform: { newValue in
+            print("node pos counter \(newValue.count)")
+            print("visible ndoes \(viewModel.visibleNodes.count)")
+            if newValue.count == viewModel.visibleNodes.count {
+                print("reloading edges")
+                viewModel.reloadEdges()
             }
+        })
+        .onChange(of: viewModel.focusedNode) { newValue in
+            print("focused node changed to \(newValue?.id ?? "")")
+            viewModel.loadGraph()
+            viewModel.reloadEdges()
+        }
+        .onChange(of: viewModel.depth) { newValue in
+            print("depth changed to \(newValue)")
+            viewModel.loadGraph()
+            viewModel.reloadEdges()
+        }
+    }
+
+    @ViewBuilder
+    func columnGraph() -> some View {
+        ZStack(alignment: alignment) {
+            EdgesView(
+                positions: $viewModel.nodePositions,
+                edges: $viewModel.visibleEdges
+            )
+            
+            ColumnGraphView(
+                nodes: [viewModel.focusedNode].compactMap { $0 },
+                depth: viewModel.depth,
+                updatePos: { node, pos in
+                    viewModel.nodePositions.removeAll(where: { $0.node == node })
+                    if let pos {
+                        viewModel.nodePositions.append(.init(node: node, position: pos))
+                    }
+                }
+            )
+        }
+        .coordinateSpace(name: "Graph")
+    }
+}
+
+struct ColumnGraphView: View {
+    let nodes: [Node]
+    let depth: Int
+    let updatePos: ((Node, CGPoint?)) -> Void
+
+    var body: some View {
+        if depth > 0 {
+            NodeGroupView(nodes: nodes, updatePos: updatePos)
+
+            ColumnGraphView(
+                nodes: nodes.flatMap(\.children).unique(),
+                depth: depth - 1,
+                updatePos: updatePos
+            )
+            .offset(x: 80)
+        }
+    }
+}
+
+struct NodeGroupView: View {
+    let nodes: [Node]
+    let updatePos: ((Node, CGPoint?)) -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(nodes, id: \.id) { node in
+                NodeView(node: node) { pos in
+                    updatePos((node, pos))
+                }
+                .padding(.vertical, 16)
+                .opacity(0.2)
+            }
+        }
+    }
+}
+
+struct NodeView: View {
+    let node: Node
+    let updatePos: (CGPoint?) -> Void
+    @State private var rect: CGRect = .zero
+
+    init(node: Node, updatePos: @escaping (CGPoint?) -> Void) {
+        self.node = node
+        self.updatePos = updatePos
+    }
+
+    var body: some View {
+        ZStack {
+            ZStack {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .background(Color.white)
+                    .padding(2)
+
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(lineWidth: 2)
+                    .background(Color.white)
+            }
+
+            Text(node.id)
+                .fontWeight(.bold)
+                .foregroundColor(.blue)
+        }
+        .aspectRatio(1, contentMode: .fit)
+        .frame(maxWidth: 50, maxHeight: 50)
+        .trackPosition(binding: $rect)
+        .onChange(of: rect, perform: { newValue in
+            updatePos(CGPoint(x: newValue.midX, y: newValue.midY))
+        })
+        .onTapGesture {
+            withAnimation(.spring()) {
+                node.action?()
+            }
+        }
+        .onDisappear { updatePos(nil) }
     }
 }
 
@@ -136,3 +194,36 @@ extension Collection where Element: Hashable {
     }
 }
 
+// Define a custom PreferenceKey
+struct ViewPositionKey: PreferenceKey {
+    typealias Value = CGRect
+
+    static var defaultValue: CGRect = .zero
+
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
+    }
+}
+
+// Define a custom SwiftUI Modifier
+struct ViewPositionModifier: ViewModifier {
+    @Binding var position: CGRect
+
+    func body(content: Content) -> some View {
+        content
+            .background(GeometryReader { proxy in
+                Color.clear.preference(key: ViewPositionKey.self, value: proxy.frame(in: .named("Graph")))
+            })
+            .onPreferenceChange(ViewPositionKey.self) { position in
+                guard self.position != position else { return }
+                self.position = position
+            }
+    }
+}
+
+// Extension for View to easily use the modifier
+extension View {
+    func trackPosition(binding: Binding<CGRect>) -> some View {
+        modifier(ViewPositionModifier(position: binding))
+    }
+}

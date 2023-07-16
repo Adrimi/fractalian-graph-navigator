@@ -13,6 +13,7 @@
         <node id="J"/>
         <edge source="A" target="B"/>
         <edge source="A" target="C"/>
+        <edge source="A" target="D"/>
         <edge source="B" target="D"/>
         <edge source="B" target="E"/>
         <edge source="C" target="F"/>
