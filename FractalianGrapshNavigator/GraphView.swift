@@ -62,22 +62,20 @@ struct GraphView: View {
 //            }
         }
         .onChange(of: viewModel.nodePositions, perform: { newValue in
-            print("node pos counter \(newValue.count)")
-            print("visible ndoes \(viewModel.visibleNodes.count)")
+            print("[onChange nodePositions] node pos counter \(newValue.count)")
+            print("[onChange nodePositions] visible ndoes \(viewModel.visibleNodes.count)")
             if newValue.count == viewModel.visibleNodes.count {
-                print("reloading edges")
-                viewModel.reloadEdges()
+                print("[onChange nodePositions] reloading edges")
+                viewModel.resetVisibleEdges()
             }
         })
         .onChange(of: viewModel.focusedNode) { newValue in
-            print("focused node changed to \(newValue?.id ?? "")")
+            print("[onChange focusedNode] focused node changed to \(newValue?.id ?? "")")
             viewModel.loadGraph()
-            viewModel.reloadEdges()
         }
         .onChange(of: viewModel.depth) { newValue in
-            print("depth changed to \(newValue)")
+            print("[onChange depth] depth changed to \(newValue)")
             viewModel.loadGraph()
-            viewModel.reloadEdges()
         }
     }
 
@@ -88,8 +86,10 @@ struct GraphView: View {
                 positions: $viewModel.nodePositions,
                 edges: $viewModel.visibleEdges
             )
+            .id(viewModel.nodePositions.hashValue)
             
             ColumnGraphView(
+                alreadyVisibleNodes: [],
                 nodes: [viewModel.focusedNode].compactMap { $0 },
                 depth: viewModel.depth,
                 updatePos: { node, pos in
@@ -105,16 +105,34 @@ struct GraphView: View {
 }
 
 struct ColumnGraphView: View {
+    var alreadyVisibleNodes: [Node]
     let nodes: [Node]
     let depth: Int
     let updatePos: ((Node, CGPoint?)) -> Void
+    
+    init(
+        alreadyVisibleNodes: [Node],
+        nodes: [Node],
+        depth: Int,
+        updatePos: @escaping ((Node, CGPoint?)) -> Void
+    ) {
+        self.alreadyVisibleNodes = alreadyVisibleNodes
+        self.nodes = nodes
+        self.depth = depth
+        self.updatePos = updatePos
+    }
 
     var body: some View {
         if depth > 0 {
             NodeGroupView(nodes: nodes, updatePos: updatePos)
 
             ColumnGraphView(
-                nodes: nodes.flatMap(\.children).unique(),
+                alreadyVisibleNodes: alreadyVisibleNodes + nodes,
+                nodes: nodes
+                    .flatMap(\.children)
+                    .filter { !alreadyVisibleNodes.contains($0) }
+                    .filter { !nodes.contains($0) }
+                    .unique(),
                 depth: depth - 1,
                 updatePos: updatePos
             )
@@ -173,9 +191,9 @@ struct NodeView: View {
             updatePos(CGPoint(x: newValue.midX, y: newValue.midY))
         })
         .onTapGesture {
-            withAnimation(.spring()) {
+//            withAnimation(.spring()) {
                 node.action?()
-            }
+//            }
         }
         .onDisappear { updatePos(nil) }
     }
@@ -184,46 +202,5 @@ struct NodeView: View {
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
         GraphView(viewModel: GraphViewModel())
-    }
-}
-
-extension Collection where Element: Hashable {
-    func unique() -> [Element] {
-        var seen: Set<Element> = []
-        return filter { seen.insert($0).inserted }
-    }
-}
-
-// Define a custom PreferenceKey
-struct ViewPositionKey: PreferenceKey {
-    typealias Value = CGRect
-
-    static var defaultValue: CGRect = .zero
-
-    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
-        value = nextValue()
-    }
-}
-
-// Define a custom SwiftUI Modifier
-struct ViewPositionModifier: ViewModifier {
-    @Binding var position: CGRect
-
-    func body(content: Content) -> some View {
-        content
-            .background(GeometryReader { proxy in
-                Color.clear.preference(key: ViewPositionKey.self, value: proxy.frame(in: .named("Graph")))
-            })
-            .onPreferenceChange(ViewPositionKey.self) { position in
-                guard self.position != position else { return }
-                self.position = position
-            }
-    }
-}
-
-// Extension for View to easily use the modifier
-extension View {
-    func trackPosition(binding: Binding<CGRect>) -> some View {
-        modifier(ViewPositionModifier(position: binding))
     }
 }

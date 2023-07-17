@@ -12,8 +12,6 @@ struct EdgesView: View {
     @Binding var edges: [Edge]
     let debug: Bool
     
-    @State var edges2: [Edge] = []
-    
     init(positions: Binding<[NodePosition]>, edges: Binding<[Edge]>, debug: Bool = false) {
         self._positions = positions
         self._edges = edges
@@ -31,25 +29,19 @@ struct EdgesView: View {
                 }
             }
             
-            ForEach(edges2, id: \.self) { edge in
+            ForEach(edges, id: \.self) { edge in
                 if let parentPoint = parentPosition(for: edge),
                    let childPoint = childPosition(for: edge) {
                     EdgeView(parentPoint: parentPoint, childPoint: childPoint)
                         .onAppear {
-                            print("Edge \(edge.source) -> \(edge.target) appeared")
+                            print("Appeared \(edge.source) -> \(edge.target)")
                         }
                         .onDisappear {
-                            print("Edge \(edge.source) -> \(edge.target) disappeared")
+                            print("Disappeard \(edge.source) -> \(edge.target)")
                         }
                 }
             }
         }
-        .onChange(of: edges) { es in
-            edges2 = es
-        }
-//        .onReceive(edges.publisher) { es in
-//            edges2 = es
-//        }
     }
     
     func parentPosition(for edge: Edge) -> CGPoint? {

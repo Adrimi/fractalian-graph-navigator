@@ -18,6 +18,8 @@
 		3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C6012A5BF468009D6D93 /* GraphView.swift */; };
 		3A91C6052A5BF535009D6D93 /* SWXMLHash in Frameworks */ = {isa = PBXBuildFile; productRef = 3A91C6042A5BF535009D6D93 /* SWXMLHash */; };
 		3A91C6072A5BF64F009D6D93 /* graph.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C6062A5BF64F009D6D93 /* graph.xml */; };
+		3AFD330B2A648B9A001C1E3C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFD330A2A648B9A001C1E3C /* Extensions.swift */; };
+		3AFD330D2A648BCB001C1E3C /* GraphModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFD330C2A648BCB001C1E3C /* GraphModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		3A91C5FF2A5BF444009D6D93 /* GraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewModel.swift; sourceTree = "<group>"; };
 		3A91C6012A5BF468009D6D93 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		3A91C6062A5BF64F009D6D93 /* graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = graph.xml; sourceTree = "<group>"; };
+		3AFD330A2A648B9A001C1E3C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3AFD330C2A648BCB001C1E3C /* GraphModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +118,8 @@
 				3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */,
 				3A91C6062A5BF64F009D6D93 /* graph.xml */,
 				3A4022172A61B7B40073329E /* EdgesView.swift */,
+				3AFD330A2A648B9A001C1E3C /* Extensions.swift */,
+				3AFD330C2A648BCB001C1E3C /* GraphModels.swift */,
 			);
 			path = FractalianGrapshNavigator;
 			sourceTree = "<group>";
@@ -275,9 +281,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A91C5D72A5BF41E009D6D93 /* ContentView.swift in Sources */,
+				3AFD330B2A648B9A001C1E3C /* Extensions.swift in Sources */,
 				3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */,
 				3A4022182A61B7B40073329E /* EdgesView.swift in Sources */,
 				3A91C6002A5BF444009D6D93 /* GraphViewModel.swift in Sources */,
+				3AFD330D2A648BCB001C1E3C /* GraphModels.swift in Sources */,
 				3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
