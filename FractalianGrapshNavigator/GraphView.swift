@@ -9,15 +9,13 @@ import SwiftUI
 
 struct GraphView: View {
     @StateObject var viewModel: GraphViewModel
-    @State var alignment: Alignment = .topLeading
+    @State var alignment: HorizontalAlignment = .leading
 
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
                 Button("Reset") {
-                    withAnimation(.spring()) {
-                        viewModel.focusedNode = nil
-                    }
+                    viewModel.focusedNode = nil
                 }
                 .buttonStyle(BorderedButtonStyle())
 
@@ -41,7 +39,7 @@ struct GraphView: View {
                 }
 
                 Button(action: { withAnimation(.spring()) {
-                    alignment = alignment == .topLeading ? .leading : .topLeading
+                    alignment = alignment == .leading ? .trailing : .leading
                 }}) {
                     Text("Toggle alignment")
                 }
@@ -54,12 +52,14 @@ struct GraphView: View {
             )
             
 
-//            ScrollView(.horizontal) {
-            columnGraph()
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.green.opacity(0.15))
-//            }
+            ScrollView(.horizontal) {
+                columnGraph()
+                    .background(Color.green.opacity(0.15))
+                    .padding()
+                //                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            
+            Spacer()
         }
         .onChange(of: viewModel.nodePositions, perform: { newValue in
             print("[onChange nodePositions] node pos counter \(newValue.count)")
@@ -81,26 +81,33 @@ struct GraphView: View {
 
     @ViewBuilder
     func columnGraph() -> some View {
-        ZStack(alignment: alignment) {
+        ZStack(alignment: .topLeading) {
             EdgesView(
                 positions: $viewModel.nodePositions,
                 edges: $viewModel.visibleEdges
             )
             .id(viewModel.nodePositions.hashValue)
             
-            ColumnGraphView(
-                alreadyVisibleNodes: [],
-                nodes: [viewModel.focusedNode].compactMap { $0 },
-                depth: viewModel.depth,
-                updatePos: { node, pos in
-                    viewModel.nodePositions.removeAll(where: { $0.node == node })
-                    if let pos {
-                        viewModel.nodePositions.append(.init(node: node, position: pos))
+            LazyVGrid(
+                columns: (0..<viewModel.depth).map { _ in GridItem(.fixed(80)) },
+                alignment: alignment,
+                spacing: 16
+            ) {
+                ColumnGraphView(
+                    alreadyVisibleNodes: [],
+                    nodes: [viewModel.focusedNode].compactMap { $0 },
+                    depth: viewModel.depth,
+                    updatePos: { node, pos in
+                        print("[updatePos] Node \(node.id) new pos \(pos)")
+                        viewModel.nodePositions.removeAll(where: { $0.node == node })
+                        if let pos {
+                            viewModel.nodePositions.append(.init(node: node, position: pos))
+                        }
                     }
-                }
-            )
+                )
+            }
+            .coordinateSpace(name: "Graph")
         }
-        .coordinateSpace(name: "Graph")
     }
 }
 
@@ -136,7 +143,7 @@ struct ColumnGraphView: View {
                 depth: depth - 1,
                 updatePos: updatePos
             )
-            .offset(x: 80)
+//            .offset(x: 80)
         }
     }
 }
@@ -195,7 +202,7 @@ struct NodeView: View {
                 node.action?()
 //            }
         }
-        .onDisappear { updatePos(nil) }
+        .onAppear { print("Node \(node.id) appeared") }
     }
 }
 
