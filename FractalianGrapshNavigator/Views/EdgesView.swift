@@ -33,12 +33,6 @@ struct EdgesView: View {
                 if let parentPoint = parentPosition(for: edge),
                    let childPoint = childPosition(for: edge) {
                     EdgeView(parentPoint: parentPoint, childPoint: childPoint)
-                        .onAppear {
-                            print("Appeared \(edge.source) -> \(edge.target)")
-                        }
-                        .onDisappear {
-                            print("Disappeard \(edge.source) -> \(edge.target)")
-                        }
                 }
             }
         }
@@ -154,8 +148,6 @@ extension Array where Element == Edge {
             }
             
         }
-        
-        print("Generated \(result.count) edges")
         
         return result
     }

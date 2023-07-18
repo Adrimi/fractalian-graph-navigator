@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct Graph {
-    var nodes: [Node] = []
-}
-
 struct Node: Hashable, Equatable {
     let id: String
     var children: [Node] = []

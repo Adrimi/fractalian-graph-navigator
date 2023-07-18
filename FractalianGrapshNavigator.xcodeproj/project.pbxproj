@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A00B3D22A65B9FD00F1CA44 /* GraphService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A00B3D12A65B9FD00F1CA44 /* GraphService.swift */; };
 		3A2CD3522A5C83AB00D0F2F8 /* graph_max.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */; };
 		3A4022182A61B7B40073329E /* EdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4022172A61B7B40073329E /* EdgesView.swift */; };
 		3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */; };
@@ -18,6 +19,10 @@
 		3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C6012A5BF468009D6D93 /* GraphView.swift */; };
 		3A91C6052A5BF535009D6D93 /* SWXMLHash in Frameworks */ = {isa = PBXBuildFile; productRef = 3A91C6042A5BF535009D6D93 /* SWXMLHash */; };
 		3A91C6072A5BF64F009D6D93 /* graph.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C6062A5BF64F009D6D93 /* graph.xml */; };
+		3A9C7BE22A6662CB00741C73 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */; };
+		3A9C7BE42A6662E200741C73 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE32A6662E200741C73 /* NodeView.swift */; };
+		3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE52A66631600741C73 /* NodeGroupView.swift */; };
+		3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */; };
 		3AFD330B2A648B9A001C1E3C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFD330A2A648B9A001C1E3C /* Extensions.swift */; };
 		3AFD330D2A648BCB001C1E3C /* GraphModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFD330C2A648BCB001C1E3C /* GraphModels.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +47,7 @@
 /* Begin PBXFileReference section */
 		3A009C432A5D325200ACC7C9 /* test_graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = test_graph.xml; sourceTree = "<group>"; };
 		3A009C452A5D38BF00ACC7C9 /* FractalianGrapshNavigator.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FractalianGrapshNavigator.xctestplan; sourceTree = SOURCE_ROOT; };
+		3A00B3D12A65B9FD00F1CA44 /* GraphService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphService.swift; sourceTree = "<group>"; };
 		3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = graph_max.xml; sourceTree = "<group>"; };
 		3A4022172A61B7B40073329E /* EdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgesView.swift; sourceTree = "<group>"; };
 		3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FractalianGrapshNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +62,10 @@
 		3A91C5FF2A5BF444009D6D93 /* GraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewModel.swift; sourceTree = "<group>"; };
 		3A91C6012A5BF468009D6D93 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		3A91C6062A5BF64F009D6D93 /* graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = graph.xml; sourceTree = "<group>"; };
+		3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
+		3A9C7BE32A6662E200741C73 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		3A9C7BE52A66631600741C73 /* NodeGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeGroupView.swift; sourceTree = "<group>"; };
+		3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphStackView.swift; sourceTree = "<group>"; };
 		3AFD330A2A648B9A001C1E3C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AFD330C2A648BCB001C1E3C /* GraphModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,18 +118,16 @@
 		3A91C5D32A5BF41E009D6D93 /* FractalianGrapshNavigator */ = {
 			isa = PBXGroup;
 			children = (
+				3A9C7BEB2A66639000741C73 /* Graphs */,
+				3A9C7BEA2A66637900741C73 /* Resources */,
 				3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */,
 				3A91C5D62A5BF41E009D6D93 /* ContentView.swift */,
-				3A91C5D82A5BF420009D6D93 /* Assets.xcassets */,
-				3A91C5DA2A5BF420009D6D93 /* FractalianGrapshNavigator.entitlements */,
-				3A91C5DB2A5BF420009D6D93 /* Preview Content */,
 				3A91C5FF2A5BF444009D6D93 /* GraphViewModel.swift */,
 				3A91C6012A5BF468009D6D93 /* GraphView.swift */,
-				3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */,
-				3A91C6062A5BF64F009D6D93 /* graph.xml */,
-				3A4022172A61B7B40073329E /* EdgesView.swift */,
+				3A9C7BE92A66635800741C73 /* Views */,
 				3AFD330A2A648B9A001C1E3C /* Extensions.swift */,
 				3AFD330C2A648BCB001C1E3C /* GraphModels.swift */,
+				3A00B3D12A65B9FD00F1CA44 /* GraphService.swift */,
 			);
 			path = FractalianGrapshNavigator;
 			sourceTree = "<group>";
@@ -140,6 +148,37 @@
 				3A009C452A5D38BF00ACC7C9 /* FractalianGrapshNavigator.xctestplan */,
 			);
 			path = FractalianGrapshNavigatorTests;
+			sourceTree = "<group>";
+		};
+		3A9C7BE92A66635800741C73 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A4022172A61B7B40073329E /* EdgesView.swift */,
+				3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */,
+				3A9C7BE32A6662E200741C73 /* NodeView.swift */,
+				3A9C7BE52A66631600741C73 /* NodeGroupView.swift */,
+				3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3A9C7BEA2A66637900741C73 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3A91C5DA2A5BF420009D6D93 /* FractalianGrapshNavigator.entitlements */,
+				3A91C5DB2A5BF420009D6D93 /* Preview Content */,
+				3A91C5D82A5BF420009D6D93 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3A9C7BEB2A66639000741C73 /* Graphs */ = {
+			isa = PBXGroup;
+			children = (
+				3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */,
+				3A91C6062A5BF64F009D6D93 /* graph.xml */,
+			);
+			path = Graphs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,11 +319,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A00B3D22A65B9FD00F1CA44 /* GraphService.swift in Sources */,
 				3A91C5D72A5BF41E009D6D93 /* ContentView.swift in Sources */,
 				3AFD330B2A648B9A001C1E3C /* Extensions.swift in Sources */,
 				3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */,
+				3A9C7BE42A6662E200741C73 /* NodeView.swift in Sources */,
 				3A4022182A61B7B40073329E /* EdgesView.swift in Sources */,
+				3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */,
+				3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */,
 				3A91C6002A5BF444009D6D93 /* GraphViewModel.swift in Sources */,
+				3A9C7BE22A6662CB00741C73 /* ControlPanelView.swift in Sources */,
 				3AFD330D2A648BCB001C1E3C /* GraphModels.swift in Sources */,
 				3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */,
 			);
@@ -435,10 +479,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = FractalianGrapshNavigator/FractalianGrapshNavigator.entitlements;
+				CODE_SIGN_ENTITLEMENTS = FractalianGrapshNavigator/Resources/FractalianGrapshNavigator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"FractalianGrapshNavigator/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"FractalianGrapshNavigator/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = UHULAJL778;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -473,10 +517,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = FractalianGrapshNavigator/FractalianGrapshNavigator.entitlements;
+				CODE_SIGN_ENTITLEMENTS = FractalianGrapshNavigator/Resources/FractalianGrapshNavigator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"FractalianGrapshNavigator/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"FractalianGrapshNavigator/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = UHULAJL778;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

@@ -6,58 +6,112 @@
 //
 
 import Foundation
+import SwiftUI
 import SWXMLHash
 
 @MainActor
 class GraphViewModel: ObservableObject {
-    @Published var edgesCache: [Edge] = []
-    @Published var nodesCache: [Node] = []
+    enum GraphMode: String, Hashable {
+        case file
+        case generated
+    }
+
+    var edgesCache: [Edge] = []
+    var nodesCache: [Node] = []
 
     @Published var focusedNode: Node?
     @Published var visibleEdges: [Edge] = []
     @Published var visibleNodes: [Node] = []
     @Published var nodePositions: [NodePosition] = []
     @Published var depth: Int = 2
+
+    @Published var isPresentingGeneratePanel: Bool = false
+    @AppStorage("graphMode") var graphMode: GraphMode = .file
+    @AppStorage("genNodesCount") var genNodesCount: String = "10"
+    @AppStorage("genEdgesCount") var genEdgesCount: String = "10"
+    @AppStorage("defaultDepth") var defaultDepth: String = "3"
+
     static let filename: String = "graph"
 
     init() {
+        depth = Int(defaultDepth) ?? 3
         loadGraph()
     }
 
-    func loadGraph(_ fileName: String = filename) {
+    func loadGraph() {
+        Task(priority: .background) {
+            switch graphMode {
+            case .file:
+                await loadGraphFromFile(Self.filename)
+            case .generated:
+                await generateGraph()
+            }
+        }
+    }
+
+    func loadGraphFromFile(_ fileName: String) async {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "xml") else {
             print("GraphML file not found")
             return
         }
 
-        do {
-            let xmlData = try Data(contentsOf: url)
-            let xml = XMLHash.parse(xmlData)
+        try? await withCheckedThrowingContinuation { continuation in
+            do {
+                let xmlData = try Data(contentsOf: url)
+                let xml = XMLHash.parse(xmlData)
 
-            let graphML = xml["graphml"]
-            let graphElement = graphML["graph"]
-            let edges = graphElement["edge"]
+                let graphML = xml["graphml"]
+                let graphElement = graphML["graph"]
+                let edges = graphElement["edge"]
 
-            // 1 - cache data
-            nodesCache = graphElement["node"].all.compactMap {
-                guard let id = $0.element?.attribute(by: "id")?.text else {
-                    return nil
+                // 1 - cache data
+                nodesCache = graphElement["node"].all.compactMap {
+                    guard let id = $0.element?.attribute(by: "id")?.text else {
+                        return nil
+                    }
+
+                    return Node(id: id)
                 }
 
-                return Node(id: id)
-            }
+                edgesCache = edges.all.compactMap { edge in
+                    guard let source = edge.element?.attribute(by: "source")?.text,
+                          let target = edge.element?.attribute(by: "target")?.text
+                    else {
+                        return nil
+                    }
 
-            edgesCache = edges.all.compactMap { edge in
-                guard let source = edge.element?.attribute(by: "source")?.text,
-                      let target = edge.element?.attribute(by: "target")?.text
-                else {
-                    return nil
+                    return Edge(source: source, target: target)
                 }
-
-                return Edge(source: source, target: target)
+            } catch {
+                print("Failed to load and parse the GraphML file: \(error)")
             }
 
-            // 2 - create note tree
+            continuation.resume()
+        }
+
+        await buildGraphStructure()
+    }
+
+    func generateGraph() async {
+        guard let numberOfNodes = Int(genNodesCount),
+              let numberOfEdges = Int(genEdgesCount)
+        else {
+            print("Invalid number of nodes or edges")
+            return
+        }
+
+        let graphService = GraphService()
+        await graphService.generateGraph(numberOfNodes: numberOfNodes, numberOfEdges: numberOfEdges)
+
+        nodesCache = graphService.nodes
+        edgesCache = graphService.edges
+
+        await buildGraphStructure()
+    }
+
+    func buildGraphStructure() async {
+        await withCheckedContinuation { continuation in
+            // 1 - create note tree
             guard let id = pickNodeID() else {
                 print("No node ID found")
                 return
@@ -65,29 +119,42 @@ class GraphViewModel: ObservableObject {
 
             let childrenTree = createChildrenTree(id: id, depth: depth - 1)
             let mainNode = createNode(id, children: childrenTree)
+
             focusedNode = mainNode
 
             // 3 - filter out visible nodes and edges to present
             resetVisibleNodes()
             resetVisibleEdges()
-        } catch {
-            print("Failed to load and parse the GraphML file: \(error)")
+            continuation.resume()
         }
     }
 
     func resetVisibleEdges() {
-        visibleEdges = edgesCache
+        visibleEdges = filteredEdges
+    }
+    
+    var filteredEdges: [Edge] {
+        edgesCache
             .filter { edge in
                 visibleNodes.contains(where: { $0.id == edge.source }) && visibleNodes.contains(where: { $0.id == edge.target })
             }
-        print("[resetVisibleEdges] \(visibleEdges.count)/\(edgesCache.count) visible: \(visibleEdges.map { "\($0.source) -> \($0.target)" }.joined(separator: ", "))")
     }
 
     func resetVisibleNodes() {
-        guard let node = focusedNode else { return }
-        let visible = CollectionOfOne(node) + node.getAllChildrenOfChildren().unique()
-        visibleNodes = visible
-        print("[resetVisibleNodes] \(visible.count)/\(nodesCache.count) visible")
+        visibleNodes = filteredNodes
+    }
+    
+    var filteredNodes: [Node] {
+        guard let node = focusedNode else {
+            return []
+        }
+        
+        let nodes = CollectionOfOne(node) + node.getAllChildrenOfChildren().unique()
+        return nodes
+    }
+
+    func resetGraph() {
+        focusedNode = nil
     }
 
     private func createChildrenTree(id: String, depth: Int) -> [Node] {
@@ -116,4 +183,3 @@ class GraphViewModel: ObservableObject {
         }
     }
 }
-

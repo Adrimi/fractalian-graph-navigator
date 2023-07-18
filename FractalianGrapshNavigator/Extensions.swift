@@ -43,9 +43,10 @@ struct ViewPositionModifier: ViewModifier {
                     value: proxy.frame(in: .named("Graph"))
                 )
             })
-            .onPreferenceChange(ViewPositionKey.self) { position in
-//                guard self.position != position else { return }
-                self.position = position
+            .onPreferenceChange(ViewPositionKey.self) { newPosition in
+                let intPosition = newPosition.integral
+                guard self.position != intPosition else { return }
+                self.position = intPosition
             }
     }
 }

@@ -23,5 +23,8 @@
         <edge source="H" target="J"/>
         <edge source="I" target="J"/>
         <edge source="A" target="J"/>
+        
+        <!-- cycle -->
+        <edge source="G" target="A"/>
     </graph>
 </graphml>
