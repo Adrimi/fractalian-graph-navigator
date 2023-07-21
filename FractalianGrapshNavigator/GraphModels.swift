@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct Graph {
+    let nodes: [Node]
+    let edges: [Edge]
+}
+
 struct Node: Hashable, Equatable {
     let id: String
     var children: [Node] = []
@@ -34,6 +39,11 @@ extension Node {
     }
 }
 
+struct Edge: Hashable, Equatable {
+    let source: String
+    let target: String
+}
+
 struct NodePosition: Hashable, Equatable {
     let node: Node
     let position: CGPoint
@@ -45,9 +55,4 @@ struct NodePosition: Hashable, Equatable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(node)
     }
-}
-
-struct Edge: Hashable, Equatable {
-    let source: String
-    let target: String
 }

@@ -1,5 +1,5 @@
 //
-//  GraphService.swift
+//  GraphGenerationService.swift
 //  FractalianGrapshNavigator
 //
 //  Created by Adrian Szymanowski on 17/07/2023.
@@ -7,30 +7,34 @@
 
 import Foundation
 
-class GraphService {
-    var nodes: [Node] = []
-    var edges: [Edge] = []
+class GraphGenerationService {
+    static let filename: String = "graph"
 
-    func generateGraph(numberOfNodes: Int, numberOfEdges: Int) async {
-        await withCheckedContinuation { continuation in
-            generateNodes(numberOfNodes: numberOfNodes)
-            generateEdges(numberOfEdges: numberOfEdges)
-            continuation.resume()
+    func generateGraph(numberOfNodes: Int, numberOfEdges: Int) async throws -> Graph {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let nodes = generateNodes(numberOfNodes: numberOfNodes)
+                let edges = try generateEdges(nodes: nodes, numberOfEdges: numberOfEdges)
+                let graph = Graph(nodes: nodes, edges: edges)
+
+                continuation.resume(returning: graph)
+            } catch {
+                continuation.resume(throwing: error)
+            }
         }
     }
 
-    func generateNodes(numberOfNodes: Int) {
-        for i in 1 ... numberOfNodes {
-            let node = Node(id: "\(i)")
-            nodes.append(node)
+    private func generateNodes(numberOfNodes: Int) -> [Node] {
+        (1 ... numberOfNodes).map { i in
+            Node(id: "\(i)")
         }
     }
 
-    func generateEdges(numberOfEdges: Int) {
+    private func generateEdges(nodes: [Node], numberOfEdges: Int) throws -> [Edge] {
         guard nodes.count >= 2 else {
-            print("Need at least 2 nodes to generate edges.")
-            return
+            throw GraphError.notEnoughNodes
         }
+        var edges = [Edge]()
 
         for _ in 1 ... numberOfEdges {
             var sourceNodeIndex = Int(arc4random_uniform(UInt32(nodes.count)))
@@ -53,5 +57,7 @@ class GraphService {
 
             edges.append(edge)
         }
+        
+        return edges
     }
 }

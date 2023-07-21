@@ -57,3 +57,46 @@ extension View {
         modifier(ViewPositionModifier(position: binding))
     }
 }
+
+public struct VisualEffect: UIViewRepresentable {
+    @State var style: UIBlurEffect.Style
+    
+    public init(style: UIBlurEffect.Style) {
+        self.style = style
+    }
+    
+    public func makeUIView(context _: Context) -> UIVisualEffectView {
+        return UIVisualEffectView(effect: UIBlurEffect(style: style))
+    }
+
+    public func updateUIView(_: UIVisualEffectView, context _: Context) {}
+}
+
+public struct BlurEffectView: View {
+    private let radius: CGFloat
+//    private let invHorizontalPadding: CGFloat
+//    private let invTopPadding: CGFloat
+//    private let invBottomPadding: CGFloat
+
+    public init(radius: CGFloat = 8) {
+        self.radius = radius
+//        invHorizontalPadding = -2 * radius
+//        invTopPadding = -2 * radius
+//        invBottomPadding = -3 * radius
+    }
+    
+    public var body: some View {
+        VisualEffect(style: .systemUltraThinMaterial)
+//            .padding(.horizontal, invHorizontalPadding)
+//            .padding(.top, invTopPadding)
+//            .padding(.bottom, invBottomPadding)
+            .blur(radius: radius)
+            .ignoresSafeArea()
+    }
+}
+
+public extension View {
+    func blur(radius: CGFloat = 8) -> some View {
+        background(BlurEffectView(radius: radius))
+    }
+}

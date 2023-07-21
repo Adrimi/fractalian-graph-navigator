@@ -8,30 +8,36 @@
 import SwiftUI
 
 struct ControlPanelView: View {
-    @ObservedObject var viewModel: GraphViewModel
-
-    init(viewModel: GraphViewModel) {
-        self.viewModel = viewModel
-    }
-
+    @Binding var graph: Graph?
+    @Binding var focusedNode: Node?
+    @Binding var depth: Int
+    @Binding var isPresentingGeneratePanel: Bool
+    
+    @Binding var genNodesCount: String
+    @Binding var genEdgesCount: String
+    @Binding var defaultDepth: String
+    @Binding var graphMode: GraphMode
+    
+    var loadGraph: () -> Void
+    
     var body: some View {
         HStack(alignment: .bottom) {
             VStack {
                 Button("Graph Settings") {
-                    viewModel.isPresentingGeneratePanel = true
+                    isPresentingGeneratePanel = true
                 }
                 .buttonStyle(BorderedProminentButtonStyle())
 
                 Button("Go to first node") {
                     withAnimation(.spring()) {
-                        viewModel.resetGraph()
+                        focusedNode = nil
                     }
                 }
                 .buttonStyle(BorderedButtonStyle())
                 
                 Button("Generate new graph") {
                     withAnimation(.spring()) {
-                        viewModel.loadGraph()
+                        loadGraph()
                     }
                 }
                 .buttonStyle(BorderedButtonStyle())
@@ -43,17 +49,17 @@ struct ControlPanelView: View {
 
                     Button("-") {
                         withAnimation(.spring()) {
-                            viewModel.depth -= 1
+                            depth -= 1
                         }
                     }
                     .buttonStyle(BorderedButtonStyle())
 
-                    Text("\(viewModel.depth)")
+                    Text("\(depth)")
                         .font(.title2)
 
                     Button("+") {
                         withAnimation(.spring()) {
-                            viewModel.depth += 1
+                            depth += 1
                         }
                     }
                     .buttonStyle(BorderedProminentButtonStyle())
@@ -65,7 +71,7 @@ struct ControlPanelView: View {
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(Color.gray.opacity(0.1))
         )
-        .sheet(isPresented: $viewModel.isPresentingGeneratePanel) {
+        .sheet(isPresented: $isPresentingGeneratePanel) {
             VStack(alignment: .center, spacing: 16) {
                 Text("Graph settings")
                     .font(.title)
@@ -76,11 +82,11 @@ struct ControlPanelView: View {
                         .padding(.horizontal, 8)
 
                     #if os(iOS)
-                    TextField("", text: $viewModel.genNodesCount)
+                    TextField("", text: $genNodesCount)
                         .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     #elseif os(macOS)
-                    TextField("", text: $viewModel.genNodesCount)
+                    TextField("", text: $genNodesCount)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     #endif
                 }
@@ -91,11 +97,11 @@ struct ControlPanelView: View {
                         .padding(.horizontal, 8)
 
                     #if os(iOS)
-                    TextField("", text: $viewModel.genEdgesCount)
+                    TextField("", text: $genEdgesCount)
                         .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     #elseif os(macOS)
-                    TextField("", text: $viewModel.genEdgesCount)
+                    TextField("", text: $genEdgesCount)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     #endif
                 }
@@ -105,11 +111,11 @@ struct ControlPanelView: View {
                         .font(.caption)
                         .padding(.horizontal, 8)
 
-                    Picker("", selection: $viewModel.graphMode) {
+                    Picker("", selection: $graphMode) {
                         Text("File")
-                            .tag(GraphViewModel.GraphMode.file)
+                            .tag(GraphMode.file)
                         Text("Generated")
-                            .tag(GraphViewModel.GraphMode.generated)
+                            .tag(GraphMode.generated)
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
@@ -120,18 +126,18 @@ struct ControlPanelView: View {
                         .padding(.horizontal, 8)
 
                     #if os(iOS)
-                    TextField("", text: $viewModel.defaultDepth)
+                    TextField("", text: $defaultDepth)
                         .keyboardType(.numberPad)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     #elseif os(macOS)
-                    TextField("", text: $viewModel.defaultDepth)
+                    TextField("", text: $defaultDepth)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     #endif
                 }
 
                 Button("Generate graph") {
-                    viewModel.loadGraph()
-                    viewModel.isPresentingGeneratePanel = false
+                    loadGraph()
+                    isPresentingGeneratePanel = false
                 }
                 .buttonStyle(BorderedProminentButtonStyle())
 

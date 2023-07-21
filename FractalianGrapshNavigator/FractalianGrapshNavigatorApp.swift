@@ -11,7 +11,7 @@ import SwiftUI
 struct FractalianGrapshNavigatorApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            GraphView()
         }
     }
 }
