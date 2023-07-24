@@ -21,7 +21,6 @@ struct GraphView: View {
     @State var graph: Graph?
     @State var focusedNode: Node?
     @State var visibleEdges: [Edge] = []
-    @State var visibleNodes: [Node] = []
     @State var nodePositions: [NodePosition] = []
     @State var depth: Int = 2
     @State var isPresentingGeneratePanel: Bool = false
@@ -29,10 +28,13 @@ struct GraphView: View {
     @State var error: GraphError? = nil
     @State var isLoadingGraph: Bool = false
 
+    init() {
+        depth = Int(defaultDepth) ?? 3
+    }
 
     var body: some View {
         VStack {
-            ControlPanelView.init(
+            ControlPanelView(
                 graph: $graph,
                 focusedNode: $focusedNode,
                 depth: $depth,
@@ -43,34 +45,36 @@ struct GraphView: View {
                 graphMode: $graphMode,
                 loadGraph: { loadGraph() }
             )
-
-            ViewThatFits(in: .horizontal) {
-                columnGraph()
-                    .background(Color.green.opacity(0.15))
-                    .padding()
-
-                ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                    columnGraph()
-                        .background(Color.green.opacity(0.15))
-                        .padding()
+            
+            ZStack {
+                
+                Color.blue.opacity(0.05)
+                
+                ZoomableContainer {
+                    ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                        columnGraph()
+                            .background(Color.red.opacity(0.05))
+                    }
+                    .background(Color.green.opacity(0.05))
                 }
+                .padding()
+                
+                if isLoadingGraph {
+                    ZStack {
+                        VisualEffect(style: .systemUltraThinMaterial)
+                        
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding()
+                            .background(Color.white.opacity(0.5))
+                            .cornerRadius(8)
+                    }
+                }
+                
             }
+            .clipped()
 
             Spacer()
-        }
-        .overlay {
-            if isLoadingGraph {
-                ZStack {
-                    VisualEffect(style: .systemUltraThinMaterial)
-                    
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .padding()
-                        .background(Color.white.opacity(0.5))
-                        .cornerRadius(8)
-                }
-                //                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
         }
         .onAppear {
             loadGraph()
@@ -143,22 +147,25 @@ struct GraphView: View {
             isLoadingGraph = true
         }
         Task(priority: .background) {
-            self.focusedNode = nil
-            self.graph = try await graphFromSelectedSource()
-            withAnimation {
-                isLoadingGraph = false
+            do {
+                self.focusedNode = nil
+                self.graph = try await graphFromSelectedSource()
+                try await buildGraphStructure()
+                withAnimation {
+                    isLoadingGraph = false
+                }
+            } catch {
+                self.error = error as? GraphError
+                self.isPresentingError = true
             }
-            try await buildGraphStructure()
         }
     }
 
     private func graphFromSelectedSource() async throws -> Graph {
-        print("Graph mode: \(graphMode)")
         switch graphMode {
         case .file:
             return try await GraphFileService().loadGraphFromDefaultFile()
         case .generated:
-            print("Generating graph | genNodesCount: \(genNodesCount) | genEdgesCount: \(genEdgesCount)")
             return try await GraphMapper().generateGraph(
                 genNodesCount: genNodesCount,
                 genEdgesCount: genEdgesCount
@@ -167,7 +174,7 @@ struct GraphView: View {
     }
 
     func buildGraphStructure() async throws {
-        let mainNode: Node = try await withCheckedThrowingContinuation { continuation in
+        let mainNode: Node = try await withCheckedThrowingContinuation { [depth] continuation in
             guard let id = pickNodeID() else {
                 continuation.resume(throwing: GraphError.noNodeID)
                 return
@@ -178,25 +185,22 @@ struct GraphView: View {
 
             continuation.resume(returning: mainNode)
         }
-        
+
+        let vnodes = await presentableNodes(mainNode: mainNode)
+        let vedges = await presentableEdges(visibleNodes: vnodes, allEdges: graph?.edges ?? [])
+            
+        // invalidate before applying to force reload view
+        focusedNode = nil
         focusedNode = mainNode
-        visibleNodes = await presentableNodes()
-        visibleEdges = await presentableEdges()
+        visibleEdges = vedges
     }
 
-    private func presentableNodes() async -> [Node] {
-        guard let node = focusedNode else {
-            return []
-        }
-
-        let nodes = CollectionOfOne(node) + node.getAllChildrenOfChildren().unique()
-        return nodes
+    private func presentableNodes(mainNode: Node) async -> [Node] {
+        CollectionOfOne(mainNode) + mainNode.getAllChildrenOfChildren().unique()
     }
 
-    private func presentableEdges() async -> [Edge] {
-        let edges = graph?.edges ?? []
-
-        return edges.filter { edge in
+    private func presentableEdges(visibleNodes: [Node], allEdges: [Edge]) async -> [Edge] {
+        allEdges.filter { edge in
             visibleNodes.contains(where: { $0.id == edge.source }) &&
                 visibleNodes.contains(where: { $0.id == edge.target })
         }

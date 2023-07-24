@@ -21,6 +21,7 @@
 		3A9C7BE42A6662E200741C73 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE32A6662E200741C73 /* NodeView.swift */; };
 		3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE52A66631600741C73 /* NodeGroupView.swift */; };
 		3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */; };
+		3AEDB1112A6B32B700F638CD /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEDB1102A6B32B700F638CD /* ZoomableContainer.swift */; };
 		3AF17ADF2A6B02220057161E /* GraphFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17ADE2A6B02220057161E /* GraphFileService.swift */; };
 		3AF17AE12A6B029F0057161E /* GraphMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17AE02A6B029F0057161E /* GraphMapper.swift */; };
 		3AF17AE32A6B05260057161E /* GraphError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17AE22A6B05260057161E /* GraphError.swift */; };
@@ -65,6 +66,7 @@
 		3A9C7BE32A6662E200741C73 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
 		3A9C7BE52A66631600741C73 /* NodeGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeGroupView.swift; sourceTree = "<group>"; };
 		3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphStackView.swift; sourceTree = "<group>"; };
+		3AEDB1102A6B32B700F638CD /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
 		3AF17ADE2A6B02220057161E /* GraphFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphFileService.swift; sourceTree = "<group>"; };
 		3AF17AE02A6B029F0057161E /* GraphMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMapper.swift; sourceTree = "<group>"; };
 		3AF17AE22A6B05260057161E /* GraphError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphError.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				3A9C7BEB2A66639000741C73 /* Graphs */,
 				3A9C7BEA2A66637900741C73 /* Resources */,
 				3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */,
+				3AEDB1102A6B32B700F638CD /* ZoomableContainer.swift */,
 				3A91C6012A5BF468009D6D93 /* GraphView.swift */,
 				3AF17AE02A6B029F0057161E /* GraphMapper.swift */,
 				3A9C7BE92A66635800741C73 /* Views */,
@@ -330,6 +333,7 @@
 				3AF17AE32A6B05260057161E /* GraphError.swift in Sources */,
 				3A4022182A61B7B40073329E /* EdgesView.swift in Sources */,
 				3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */,
+				3AEDB1112A6B32B700F638CD /* ZoomableContainer.swift in Sources */,
 				3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */,
 				3AF17ADF2A6B02220057161E /* GraphFileService.swift in Sources */,
 				3A9C7BE22A6662CB00741C73 /* ControlPanelView.swift in Sources */,
