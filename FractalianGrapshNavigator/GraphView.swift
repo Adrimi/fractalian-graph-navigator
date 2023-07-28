@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIIntrospect
 
 enum GraphMode: String, Hashable {
     case file
@@ -14,6 +13,8 @@ enum GraphMode: String, Hashable {
 }
 
 struct GraphView: View {
+    @Namespace var geometry
+
     @AppStorage("graphMode") var graphMode: GraphMode = .file
     @AppStorage("genNodesCount") var genNodesCount: String = "100"
     @AppStorage("genEdgesCount") var genEdgesCount: String = "400"
@@ -29,32 +30,39 @@ struct GraphView: View {
     @State var isPresentingGeneratePanel: Bool = false
     @State var isPresentingError: Bool = false
     @State var error: GraphError? = nil
-    @State var isLoadingGraph: Bool = false
+    @State var isLoading: Bool = false
     @State var disablePosUpdate: Bool = false
-    
+
     private let maxZoom = 0.2
+    private let minZoom = 5.0
     @State private var currentZoom = 0.0
     @State private var totalZoom = 1.0
-    
+
     var magnification: some Gesture {
         MagnificationGesture()
             .onChanged { value in
                 guard currentZoom > maxZoom - 1.0 else {
                     return
                 }
+                guard currentZoom < minZoom - 1.0 else {
+                    return
+                }
                 currentZoom = value - 1.0
             }
-            .onEnded { value in
+            .onEnded { _ in
                 withAnimation(.spring()) {
                     totalZoom += currentZoom
                     currentZoom = 0
                     if totalZoom < maxZoom {
                         totalZoom = maxZoom
                     }
+                    if totalZoom > minZoom {
+                        totalZoom = minZoom
+                    }
                 }
             }
     }
-    
+
     var doubleTapResetGesture: some Gesture {
         TapGesture(count: 2)
             .onEnded {
@@ -63,7 +71,14 @@ struct GraphView: View {
                 }
             }
     }
-    
+
+    var visibleNodes: [Node] {
+        guard let focusedNode = focusedNode else {
+            return graph?.nodes ?? []
+        }
+
+        return CollectionOfOne(focusedNode) + focusedNode.getAllChildrenOfChildren()
+    }
 
     init() {
         depth = Int(defaultDepth) ?? 3
@@ -85,43 +100,14 @@ struct GraphView: View {
                 depthSpacing: $depthSpacing.asCGFloat,
                 loadGraph: { loadGraph() }
             )
-            
-            infoView()
 
-            ZStack {
-                ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                    columnGraph()
-                        .drawingGroup()
-                        .scaleEffect(currentZoom + totalZoom)
-                }
-                .introspect(.scrollView, on: .iOS(.v16, .v17)) { sv in
-                    sv.clipsToBounds = false
-                }
-                .gesture(magnification)
-                .gesture(doubleTapResetGesture)
-                .background(Color.color2)
-                
-                if isLoadingGraph {
-                    ZStack {
-                        #if os(iOS)
-                        VisualEffect(style: .systemUltraThinMaterial)
-                        #elseif os(macOS)
-                        VisualEffect(style: .contentBackground)
-                        #endif
-                        
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .padding()
-                            .background(Color.white.opacity(0.5))
-                            .cornerRadius(8)
-                    }
-                }
-            }
-            .clipShape(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+            InfoView(
+                graph: graph,
+                visibleNodes: visibleNodes,
+                visibleEdges: visibleEdges
             )
-            .padding(.horizontal, 16)
-            .shadow(radius: 16, x: 4, y: 4)
+
+            graphContentView()
 
             Spacer()
         }
@@ -151,6 +137,35 @@ struct GraphView: View {
     }
 
     @ViewBuilder
+    func graphContentView() -> some View {
+        ZStack {
+            ScrollViewReader { proxy in
+                ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                    columnGraph()
+                        .drawingGroup()
+                        .scaleEffect(currentZoom + totalZoom)
+                        .id("columnGraph")
+                        .onChange(of: depth) { _ in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                proxy.scrollTo("columnGraph", anchor: .leading)
+                            }
+                        }
+                }
+            }
+            .gesture(magnification)
+            .gesture(doubleTapResetGesture)
+            .background(Color.color2)
+
+            LoadingView(isLoading: $isLoading)
+        }
+        .clipShape(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
+        .padding(.horizontal, 16)
+        .shadow(radius: 16, x: 4, y: 4)
+    }
+
+    @ViewBuilder
     func columnGraph() -> some View {
         ZStack(alignment: .center) {
             if !disablePosUpdate {
@@ -171,7 +186,8 @@ struct GraphView: View {
                         nodePositions.removeAll(where: { $0 == newNodePosition })
                         nodePositions.append(newNodePosition)
                     },
-                    nodeSpacing: $nodeSpacing.asCGFloat
+                    nodeSpacing: $nodeSpacing.asCGFloat,
+                    namespace: geometry
                 )
             }
             .coordinateSpace(name: "Graph")
@@ -179,35 +195,13 @@ struct GraphView: View {
         .padding(.leading, 8)
         .border(Color.red, width: 2)
     }
-    
-    @ViewBuilder
-    func infoView() -> some View {
-        DynamicStack {
-            Text("Total Nodes count: \(graph?.nodes.count ?? 0)")
-            Text("Total Edges count: \(graph?.edges.count ?? 0)")
-            Text("Visible Nodes count: \((focusedNode?.getAllChildrenOfChildren().count ?? 0) + 1)")
-            Text("Visible Edges count: \(visibleEdges.count)")
-        }
-        .font(.caption)
-        .foregroundColor(Color.white)
-        .padding(8)
-        .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.gray.opacity(0.1))
-        )
-        .padding(8)
-    }
 
     func refreshGraph() {
-        withAnimation {
-            isLoadingGraph = true
-        }
+        setLoading(true)
         Task(priority: .background) {
             do {
                 try await buildGraphStructure()
-                withAnimation {
-                    isLoadingGraph = false
-                }
+                setLoading(false)
             } catch {
                 self.error = error as? GraphError
                 self.isPresentingError = true
@@ -217,7 +211,7 @@ struct GraphView: View {
 
     func loadGraph() {
         withAnimation {
-            isLoadingGraph = true
+            isLoading = true
         }
         Task(priority: .background) {
             do {
@@ -225,12 +219,25 @@ struct GraphView: View {
                 self.graph = try await graphFromSelectedSource()
                 try await buildGraphStructure()
                 withAnimation {
-                    isLoadingGraph = false
+                    isLoading = false
                 }
             } catch {
                 self.error = error as? GraphError
                 self.isPresentingError = true
             }
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func setLoading(_ loading: Bool) {
+        guard visibleNodes.count <= 100 else {
+            isLoading = false
+            return
+        }
+
+        withAnimation {
+            isLoading = loading
         }
     }
 
@@ -246,22 +253,11 @@ struct GraphView: View {
         }
     }
 
-    func buildGraphStructure() async throws {
-        let mainNode: Node = try await withCheckedThrowingContinuation { [depth] continuation in
-            guard let id = pickNodeID() else {
-                continuation.resume(throwing: GraphError.noNodeID)
-                return
-            }
-
-            let childrenTree = createChildrenTree(id: id, depth: depth - 1)
-            let mainNode = createNode(id, children: childrenTree)
-
-            continuation.resume(returning: mainNode)
-        }
-
+    private func buildGraphStructure() async throws {
+        let mainNode = try await makeMainNode()
         let vnodes = await presentableNodes(mainNode: mainNode)
         let vedges = await presentableEdges(visibleNodes: vnodes, allEdges: graph?.edges ?? [])
-            
+
         // invalidate before applying to force reload view
         focusedNode = nil
         focusedNode = mainNode
@@ -277,6 +273,17 @@ struct GraphView: View {
             visibleNodes.contains(where: { $0.id == edge.source }) &&
                 visibleNodes.contains(where: { $0.id == edge.target })
         }
+    }
+
+    private func makeMainNode() async throws -> Node {
+        guard let id = pickNodeID() else {
+            throw GraphError.noNodeID
+        }
+
+        let childrenTree = createChildrenTree(id: id, depth: depth - 1)
+        let mainNode = createNode(id, children: childrenTree)
+
+        return mainNode
     }
 
     private func createChildrenTree(id: String, depth: Int) -> [Node] {

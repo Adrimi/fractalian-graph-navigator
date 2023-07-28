@@ -21,10 +21,12 @@ struct NodeView: View {
 
     let node: Node
     let updatePos: (CGPoint) -> Void
+    var namespace: Namespace.ID
     @State private var rect: CGRect = .zero
 
-    init(node: Node, updatePos: @escaping (CGPoint) -> Void) {
+    init(node: Node, namespace: Namespace.ID, updatePos: @escaping (CGPoint) -> Void) {
         self.node = node
+        self.namespace = namespace
         self.updatePos = updatePos
     }
 
@@ -56,18 +58,24 @@ struct NodeView: View {
                 node.action?()
             }
         }
-        .id(node.id)
+        .matchedGeometryEffect(id: node.id, in: namespace)
     }
 }
 
 struct NodeView_Previews: PreviewProvider {
+    struct StatefulPreview: View {
+        @Namespace var nspace
+
+        var body: some View {
+            NodeView(node: Node(id: "1"), namespace: nspace, updatePos: { _ in })
+        }
+    }
+
     static var previews: some View {
         VStack {
-            NodeView(node: Node(id: "1"), updatePos: { _ in })
-                .environment(\.colorScheme, .dark)
+            StatefulPreview().environment(\.colorScheme, .dark)
 
-            NodeView(node: Node(id: "1"), updatePos: { _ in })
-                .environment(\.colorScheme, .light)
+            StatefulPreview().environment(\.colorScheme, .light)
         }
         .padding()
     }

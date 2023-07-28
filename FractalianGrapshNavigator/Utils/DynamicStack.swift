@@ -13,8 +13,6 @@ struct DynamicStack<Content: View>: View {
     var spacing: CGFloat?
     @ViewBuilder var content: () -> Content
     
-    @Environment(\.horizontalSizeClass) private var sizeClass
-
     var body: some View {
         ViewThatFits {
             HStack(

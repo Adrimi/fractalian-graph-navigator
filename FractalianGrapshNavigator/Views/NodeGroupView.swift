@@ -11,11 +11,12 @@ struct NodeGroupView: View {
     let nodes: [Node]
     let updatePos: (NodePosition) -> Void
     @Binding var nodeSpacing: CGFloat
+    var namespace: Namespace.ID
 
     var body: some View {
         VStack(spacing: 0) {
             ForEach(nodes, id: \.id) { node in
-                NodeView(node: node) { newPosition in
+                NodeView(node: node, namespace: namespace) { newPosition in
                     updatePos(NodePosition(node: node, position: newPosition))
                 }
                 .padding(.vertical, nodeSpacing)

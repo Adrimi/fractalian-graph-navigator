@@ -13,23 +13,26 @@ struct ColumnGraphStackView: View {
     let depth: Int
     let updatePos: (NodePosition) -> Void
     @Binding var nodeSpacing: CGFloat
+    var namespace: Namespace.ID
 
     init(
         alreadyVisibleNodes: [Node],
         nodes: [Node],
         depth: Int,
         updatePos: @escaping (NodePosition) -> Void,
-        nodeSpacing: Binding<CGFloat>
+        nodeSpacing: Binding<CGFloat>,
+        namespace: Namespace.ID
     ) {
         self.alreadyVisibleNodes = alreadyVisibleNodes
         self.nodes = nodes
         self.depth = depth
         self.updatePos = updatePos
         _nodeSpacing = nodeSpacing
+        self.namespace = namespace
     }
 
     var body: some View {
-        NodeGroupView(nodes: nodes, updatePos: updatePos, nodeSpacing: $nodeSpacing)
+        NodeGroupView(nodes: nodes, updatePos: updatePos, nodeSpacing: $nodeSpacing, namespace: namespace)
 
         if depth >= 0 {
             ColumnGraphStackView(
@@ -41,7 +44,8 @@ struct ColumnGraphStackView: View {
                     .unique(),
                 depth: depth - 1,
                 updatePos: updatePos,
-                nodeSpacing: $nodeSpacing
+                nodeSpacing: $nodeSpacing,
+                namespace: namespace
             )
         }
     }
