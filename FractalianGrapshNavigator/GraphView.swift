@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
 
 enum GraphMode: String, Hashable {
     case file
@@ -14,9 +15,11 @@ enum GraphMode: String, Hashable {
 
 struct GraphView: View {
     @AppStorage("graphMode") var graphMode: GraphMode = .file
-    @AppStorage("genNodesCount") var genNodesCount: String = "10"
-    @AppStorage("genEdgesCount") var genEdgesCount: String = "10"
+    @AppStorage("genNodesCount") var genNodesCount: String = "100"
+    @AppStorage("genEdgesCount") var genEdgesCount: String = "400"
     @AppStorage("defaultDepth") var defaultDepth: String = "3"
+    @AppStorage("nodeSpacing") var nodeSpacing: String = "16"
+    @AppStorage("depthSpacing") var depthSpacing: String = "16"
 
     @State var graph: Graph?
     @State var focusedNode: Node?
@@ -27,6 +30,40 @@ struct GraphView: View {
     @State var isPresentingError: Bool = false
     @State var error: GraphError? = nil
     @State var isLoadingGraph: Bool = false
+    @State var disablePosUpdate: Bool = false
+    
+    private let maxZoom = 0.2
+    @State private var currentZoom = 0.0
+    @State private var totalZoom = 1.0
+    
+    var magnification: some Gesture {
+        MagnificationGesture()
+            .onChanged { value in
+                guard currentZoom > maxZoom - 1.0 else {
+                    return
+                }
+                currentZoom = value - 1.0
+            }
+            .onEnded { value in
+                withAnimation(.spring()) {
+                    totalZoom += currentZoom
+                    currentZoom = 0
+                    if totalZoom < maxZoom {
+                        totalZoom = maxZoom
+                    }
+                }
+            }
+    }
+    
+    var doubleTapResetGesture: some Gesture {
+        TapGesture(count: 2)
+            .onEnded {
+                withAnimation(.spring()) {
+                    totalZoom = 1.0
+                }
+            }
+    }
+    
 
     init() {
         depth = Int(defaultDepth) ?? 3
@@ -43,25 +80,32 @@ struct GraphView: View {
                 genEdgesCount: $genEdgesCount,
                 defaultDepth: $defaultDepth,
                 graphMode: $graphMode,
+                disablePosUpdate: $disablePosUpdate,
+                nodeSpacing: $nodeSpacing.asCGFloat,
+                depthSpacing: $depthSpacing.asCGFloat,
                 loadGraph: { loadGraph() }
             )
             
             ZStack {
-                
-                Color.blue.opacity(0.05)
-                
-                ZoomableContainer {
-                    ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                        columnGraph()
-                            .background(Color.red.opacity(0.05))
-                    }
-                    .background(Color.green.opacity(0.05))
+                ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                    columnGraph()
+                        .drawingGroup()
+                        .scaleEffect(currentZoom + totalZoom)
                 }
-                .padding()
+                .introspect(.scrollView, on: .iOS(.v16, .v17)) { sv in
+                    sv.clipsToBounds = false
+                }
+                .gesture(magnification)
+                .gesture(doubleTapResetGesture)
+                .background(Color.color2)
                 
                 if isLoadingGraph {
                     ZStack {
+                        #if os(iOS)
                         VisualEffect(style: .systemUltraThinMaterial)
+                        #elseif os(macOS)
+                        VisualEffect(style: .contentBackground)
+                        #endif
                         
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle())
@@ -70,9 +114,12 @@ struct GraphView: View {
                             .cornerRadius(8)
                     }
                 }
-                
             }
-            .clipped()
+            .clipShape(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+            )
+            .padding()
+            .shadow(radius: 16, x: 4, y: 4)
 
             Spacer()
         }
@@ -96,33 +143,37 @@ struct GraphView: View {
             guard let intValue = Int(newValue) else { return }
             depth = intValue
         }
+        .background(
+            Color.color1.ignoresSafeArea()
+        )
     }
 
     @ViewBuilder
     func columnGraph() -> some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .center) {
             EdgesView(
                 positions: $nodePositions,
                 edges: $visibleEdges
             )
             .id(nodePositions.hashValue)
 
-            LazyVGrid(
-                columns: (0 ..< depth).map { _ in GridItem(.fixed(80)) },
-                spacing: 16
-            ) {
+            HStack(spacing: $depthSpacing.asCGFloat.wrappedValue) {
                 ColumnGraphStackView(
                     alreadyVisibleNodes: [],
                     nodes: [focusedNode].compactMap { $0 },
                     depth: depth,
                     updatePos: { newNodePosition in
+                        guard !disablePosUpdate else { return }
                         nodePositions.removeAll(where: { $0 == newNodePosition })
                         nodePositions.append(newNodePosition)
-                    }
+                    },
+                    nodeSpacing: $nodeSpacing.asCGFloat
                 )
             }
+            .id(focusedNode?.id)
             .coordinateSpace(name: "Graph")
         }
+        .border(Color.red, width: 2)
     }
 
     func refreshGraph() {
@@ -237,5 +288,14 @@ struct GraphView: View {
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
         GraphView()
+    }
+}
+
+extension Binding where Value == String {
+    var asCGFloat: Binding<CGFloat> {
+        .init(
+            get: { CGFloat(Double(wrappedValue) ?? 0) },
+            set: { wrappedValue = "\($0)" }
+        )
     }
 }

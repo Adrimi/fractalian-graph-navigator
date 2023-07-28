@@ -8,6 +8,17 @@
 import SwiftUI
 
 struct NodeView: View {
+    enum Constants {
+        static let spacing: CGFloat = 16
+        static let cornerRadius: CGFloat = 8
+        static let lineWidth: CGFloat = 2
+        static let minimumScaleFactor: CGFloat = 0.5
+        static let padding: CGFloat = 2
+        static let aspectRatio: CGFloat = 1
+        static let width: CGFloat = 50
+        static let height: CGFloat = 50
+    }
+
     let node: Node
     let updatePos: (CGPoint) -> Void
     @State private var rect: CGRect = .zero
@@ -19,25 +30,24 @@ struct NodeView: View {
 
     var body: some View {
         ZStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .background(Color.white)
-                    .padding(2)
-
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(lineWidth: 2)
-                    .background(Color.white)
-            }
+            RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous)
+                .foregroundColor(Color.color3)
+            RoundedRectangle(cornerRadius: Constants.cornerRadius, style: .continuous)
+                .stroke(lineWidth: Constants.lineWidth)
+                .foregroundColor(Color.white)
 
             Text(node.id)
-                .fontWeight(.bold)
-                .foregroundColor(.blue)
+                .allowsTightening(true)
+                .minimumScaleFactor(Constants.minimumScaleFactor)
+                .font(.title)
+                .foregroundColor(Color.white)
+                .padding(Constants.padding)
         }
-        .aspectRatio(1, contentMode: .fit)
-        .frame(maxWidth: 50, maxHeight: 50)
+        .aspectRatio(Constants.aspectRatio, contentMode: .fit)
+        .frame(width: Constants.width, height: Constants.height)
         .trackPosition(binding: $rect)
         .onChange(of: rect, perform: { newValue in
-            withAnimation(.spring()) {
+            DispatchQueue.main.async {
                 updatePos(CGPoint(x: newValue.midX, y: newValue.midY))
             }
         })
@@ -46,5 +56,19 @@ struct NodeView: View {
                 node.action?()
             }
         }
+        .id(node.id)
+    }
+}
+
+struct NodeView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            NodeView(node: Node(id: "1"), updatePos: { _ in })
+                .environment(\.colorScheme, .dark)
+
+            NodeView(node: Node(id: "1"), updatePos: { _ in })
+                .environment(\.colorScheme, .light)
+        }
+        .padding()
     }
 }

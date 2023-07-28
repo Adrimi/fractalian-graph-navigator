@@ -58,6 +58,7 @@ extension View {
     }
 }
 
+#if os(iOS)
 public struct VisualEffect: UIViewRepresentable {
     @State var style: UIBlurEffect.Style
     
@@ -71,32 +72,21 @@ public struct VisualEffect: UIViewRepresentable {
 
     public func updateUIView(_: UIVisualEffectView, context _: Context) {}
 }
-
-public struct BlurEffectView: View {
-    private let radius: CGFloat
-//    private let invHorizontalPadding: CGFloat
-//    private let invTopPadding: CGFloat
-//    private let invBottomPadding: CGFloat
-
-    public init(radius: CGFloat = 8) {
-        self.radius = radius
-//        invHorizontalPadding = -2 * radius
-//        invTopPadding = -2 * radius
-//        invBottomPadding = -3 * radius
+#elseif os(macOS)
+public struct VisualEffect: NSViewRepresentable {
+    @State var style: NSVisualEffectView.Material
+    
+    public init(style: NSVisualEffectView.Material) {
+        self.style = style
     }
     
-    public var body: some View {
-        VisualEffect(style: .systemUltraThinMaterial)
-//            .padding(.horizontal, invHorizontalPadding)
-//            .padding(.top, invTopPadding)
-//            .padding(.bottom, invBottomPadding)
-            .blur(radius: radius)
-            .ignoresSafeArea()
+    public func makeNSView(context _: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = style
+        return view
     }
-}
 
-public extension View {
-    func blur(radius: CGFloat = 8) -> some View {
-        background(BlurEffectView(radius: radius))
-    }
+    public func updateNSView(_: NSVisualEffectView, context _: Context) {}
 }
+#endif
+

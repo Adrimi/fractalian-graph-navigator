@@ -12,140 +12,162 @@ struct ControlPanelView: View {
     @Binding var focusedNode: Node?
     @Binding var depth: Int
     @Binding var isPresentingGeneratePanel: Bool
-    
+
     @Binding var genNodesCount: String
     @Binding var genEdgesCount: String
     @Binding var defaultDepth: String
     @Binding var graphMode: GraphMode
-    
+    @Binding var disablePosUpdate: Bool
+    @Binding var nodeSpacing: CGFloat
+    @Binding var depthSpacing: CGFloat
+
     var loadGraph: () -> Void
-    
+
     var body: some View {
-        HStack(alignment: .bottom) {
-            VStack {
-                Button("Graph Settings") {
-                    isPresentingGeneratePanel = true
-                }
-                .buttonStyle(BorderedProminentButtonStyle())
+        DynamicStack {
+            Button("Graph Settings") {
+                isPresentingGeneratePanel = true
+            }
+            .buttonStyle(MainButtonStyle())
 
-                Button("Go to first node") {
-                    withAnimation(.spring()) {
-                        focusedNode = nil
-                    }
+            Button("Go to first node") {
+                withAnimation {
+                    focusedNode = nil
                 }
-                .buttonStyle(BorderedButtonStyle())
-                
+            }
+            .buttonStyle(SecondaryButtonStyle())
+
+            if graphMode == .generated {
                 Button("Generate new graph") {
-                    withAnimation(.spring()) {
-                        loadGraph()
-                    }
-                }
-                .buttonStyle(BorderedButtonStyle())
-
-
-                HStack {
-                    Text("Graph Depth")
-                        .font(.title3)
-
-                    Button("-") {
-                        withAnimation(.spring()) {
-                            depth -= 1
-                        }
-                    }
-                    .buttonStyle(BorderedButtonStyle())
-
-                    Text("\(depth)")
-                        .font(.title2)
-
-                    Button("+") {
-                        withAnimation(.spring()) {
-                            depth += 1
-                        }
-                    }
-                    .buttonStyle(BorderedProminentButtonStyle())
-                }
-            }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.gray.opacity(0.1))
-        )
-        .sheet(isPresented: $isPresentingGeneratePanel) {
-            VStack(alignment: .center, spacing: 16) {
-                Text("Graph settings")
-                    .font(.title)
-
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Number of nodes")
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-
-                    #if os(iOS)
-                    TextField("", text: $genNodesCount)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    #elseif os(macOS)
-                    TextField("", text: $genNodesCount)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    #endif
-                }
-
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Number of edges")
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-
-                    #if os(iOS)
-                    TextField("", text: $genEdgesCount)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    #elseif os(macOS)
-                    TextField("", text: $genEdgesCount)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    #endif
-                }
-
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Graph input source")
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-
-                    Picker("", selection: $graphMode) {
-                        Text("File")
-                            .tag(GraphMode.file)
-                        Text("Generated")
-                            .tag(GraphMode.generated)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                }
-
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Default depth")
-                        .font(.caption)
-                        .padding(.horizontal, 8)
-
-                    #if os(iOS)
-                    TextField("", text: $defaultDepth)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    #elseif os(macOS)
-                    TextField("", text: $defaultDepth)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    #endif
-                }
-
-                Button("Generate graph") {
                     loadGraph()
-                    isPresentingGeneratePanel = false
                 }
-                .buttonStyle(BorderedProminentButtonStyle())
-
-                Spacer()
+                .buttonStyle(SecondaryButtonStyle())
             }
-            .padding(24)
-            .presentationDetents([.medium])
+
+            HStack {
+                Text("Graph Depth")
+                    .font(.headline)
+                    .foregroundColor(Color.white)
+
+                Button {
+                    withAnimation(.spring()) {
+                        depth -= 1
+                    }
+                } label: {
+                    Text("-")
+                        .frame(width: 22, height: 22)
+                }
+                .buttonStyle(SecondaryButtonStyle())
+
+                Text("\(depth)")
+                    .font(.title2)
+                    .foregroundColor(Color.white)
+
+                Button {
+                    withAnimation(.spring()) {
+                        depth += 1
+                    }
+                } label: {
+                    Text("+")
+                        .frame(width: 22, height: 22)
+                }
+                .buttonStyle(MainButtonStyle())
+            }
+            .padding(8)
+            .background(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(Color.gray.opacity(0.1))
+            )
+        }
+        .sheet(isPresented: $isPresentingGeneratePanel) {
+            ScrollView {
+                makeFullPanel()
+                    .padding(24)
+            }
+            .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
+    }
+    
+    @ViewBuilder
+    private func makeFullPanel() -> some View {
+        VStack(alignment: .center, spacing: 16) {
+            Text("Graph settings")
+                .font(.title3)
+
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Graph input source")
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+
+                Picker("", selection: $graphMode.animation()) {
+                    Text("File")
+                        .tag(GraphMode.file)
+                    Text("Generated")
+                        .tag(GraphMode.generated)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+            }
+
+            if graphMode == .generated {
+                makeInputView("Number of nodes", $genNodesCount)
+                makeInputView("Number of edges", $genEdgesCount)
+            }
+
+            makeInputView("Default depth", $defaultDepth)
+            makeSliderView("Node spacing", $nodeSpacing, 4...200)
+            makeSliderView("Depth spacing", $depthSpacing, 4...200)
+            
+            Toggle("Disable position update", isOn: $disablePosUpdate)
+                .toggleStyle(SwitchToggleStyle(tint: Color.color3))
+                .padding(.horizontal, 8)
+
+            Button("Generate graph") {
+                loadGraph()
+                isPresentingGeneratePanel = false
+            }
+            .buttonStyle(MainButtonStyle())
+
+            Spacer()
+        }
+    }
+
+    @ViewBuilder
+    private func makeInputView(_ title: String, _ text: Binding<String>) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.caption)
+                .padding(.horizontal, 8)
+
+            makeTextField(text)
+        }
+    }
+    
+    @ViewBuilder
+    private func makeSliderView(_ title: String, _ value: Binding<CGFloat>, _ range: ClosedRange<CGFloat>) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.caption)
+                .padding(.horizontal, 8)
+
+            HStack(spacing: 8) {
+                Text("\(Int(range.lowerBound))")
+                Slider(value: value.animation(.spring()), in: range)
+                Text("\(Int(range.upperBound))")
+            }
+            .font(.footnote)
+        }
+    }
+
+    @ViewBuilder
+    private func makeTextField(_ text: Binding<String>) -> some View {
+        #if os(iOS)
+        TextField("", text: text)
+            .keyboardType(.numberPad)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+        #elseif os(macOS)
+        TextField("", text: text)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+        #endif
     }
 }

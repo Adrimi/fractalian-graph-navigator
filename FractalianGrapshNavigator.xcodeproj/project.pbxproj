@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		3A00B3D22A65B9FD00F1CA44 /* GraphGenerationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A00B3D12A65B9FD00F1CA44 /* GraphGenerationService.swift */; };
+		3A2B36F22A6F005D00CBBAA6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B36F12A6F005D00CBBAA6 /* Colors.swift */; };
+		3A2B36F72A6F241000CBBAA6 /* DynamicStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B36F62A6F241000CBBAA6 /* DynamicStack.swift */; };
+		3A2B36F92A6F242A00CBBAA6 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B36F82A6F242A00CBBAA6 /* ButtonStyles.swift */; };
+		3A2B36FC2A6F2B4500CBBAA6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3A2B36FB2A6F2B4500CBBAA6 /* SwiftUIIntrospect */; };
 		3A2CD3522A5C83AB00D0F2F8 /* graph_max.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */; };
 		3A4022182A61B7B40073329E /* EdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4022172A61B7B40073329E /* EdgesView.swift */; };
 		3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */; };
@@ -21,7 +25,6 @@
 		3A9C7BE42A6662E200741C73 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE32A6662E200741C73 /* NodeView.swift */; };
 		3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE52A66631600741C73 /* NodeGroupView.swift */; };
 		3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */; };
-		3AEDB1112A6B32B700F638CD /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEDB1102A6B32B700F638CD /* ZoomableContainer.swift */; };
 		3AF17ADF2A6B02220057161E /* GraphFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17ADE2A6B02220057161E /* GraphFileService.swift */; };
 		3AF17AE12A6B029F0057161E /* GraphMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17AE02A6B029F0057161E /* GraphMapper.swift */; };
 		3AF17AE32A6B05260057161E /* GraphError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17AE22A6B05260057161E /* GraphError.swift */; };
@@ -50,6 +53,9 @@
 		3A009C432A5D325200ACC7C9 /* test_graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = test_graph.xml; sourceTree = "<group>"; };
 		3A009C452A5D38BF00ACC7C9 /* FractalianGrapshNavigator.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FractalianGrapshNavigator.xctestplan; sourceTree = SOURCE_ROOT; };
 		3A00B3D12A65B9FD00F1CA44 /* GraphGenerationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGenerationService.swift; sourceTree = "<group>"; };
+		3A2B36F12A6F005D00CBBAA6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		3A2B36F62A6F241000CBBAA6 /* DynamicStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStack.swift; sourceTree = "<group>"; };
+		3A2B36F82A6F242A00CBBAA6 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = graph_max.xml; sourceTree = "<group>"; };
 		3A4022172A61B7B40073329E /* EdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgesView.swift; sourceTree = "<group>"; };
 		3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FractalianGrapshNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,7 +72,6 @@
 		3A9C7BE32A6662E200741C73 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
 		3A9C7BE52A66631600741C73 /* NodeGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeGroupView.swift; sourceTree = "<group>"; };
 		3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphStackView.swift; sourceTree = "<group>"; };
-		3AEDB1102A6B32B700F638CD /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
 		3AF17ADE2A6B02220057161E /* GraphFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphFileService.swift; sourceTree = "<group>"; };
 		3AF17AE02A6B029F0057161E /* GraphMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMapper.swift; sourceTree = "<group>"; };
 		3AF17AE22A6B05260057161E /* GraphError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphError.swift; sourceTree = "<group>"; };
@@ -80,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A91C6052A5BF535009D6D93 /* SWXMLHash in Frameworks */,
+				3A2B36FC2A6F2B4500CBBAA6 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +106,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A2B36F32A6F12FA00CBBAA6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3A2B36F62A6F241000CBBAA6 /* DynamicStack.swift */,
+				3A2B36F12A6F005D00CBBAA6 /* Colors.swift */,
+				3A2B36F82A6F242A00CBBAA6 /* ButtonStyles.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		3A91C5C82A5BF41E009D6D93 = {
 			isa = PBXGroup;
 			children = (
@@ -122,10 +138,10 @@
 		3A91C5D32A5BF41E009D6D93 /* FractalianGrapshNavigator */ = {
 			isa = PBXGroup;
 			children = (
+				3A2B36F32A6F12FA00CBBAA6 /* Utils */,
 				3A9C7BEB2A66639000741C73 /* Graphs */,
 				3A9C7BEA2A66637900741C73 /* Resources */,
 				3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */,
-				3AEDB1102A6B32B700F638CD /* ZoomableContainer.swift */,
 				3A91C6012A5BF468009D6D93 /* GraphView.swift */,
 				3AF17AE02A6B029F0057161E /* GraphMapper.swift */,
 				3A9C7BE92A66635800741C73 /* Views */,
@@ -205,6 +221,7 @@
 			name = FractalianGrapshNavigator;
 			packageProductDependencies = (
 				3A91C6042A5BF535009D6D93 /* SWXMLHash */,
+				3A2B36FB2A6F2B4500CBBAA6 /* SwiftUIIntrospect */,
 			);
 			productName = FractalianGrapshNavigator;
 			productReference = 3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */;
@@ -280,6 +297,7 @@
 			mainGroup = 3A91C5C82A5BF41E009D6D93;
 			packageReferences = (
 				3A91C6032A5BF535009D6D93 /* XCRemoteSwiftPackageReference "SWXMLHash" */,
+				3A2B36FA2A6F2B4500CBBAA6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 3A91C5D22A5BF41E009D6D93 /* Products */;
 			projectDirPath = "";
@@ -326,6 +344,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A00B3D22A65B9FD00F1CA44 /* GraphGenerationService.swift in Sources */,
+				3A2B36F22A6F005D00CBBAA6 /* Colors.swift in Sources */,
+				3A2B36F72A6F241000CBBAA6 /* DynamicStack.swift in Sources */,
 				3AF17AE12A6B029F0057161E /* GraphMapper.swift in Sources */,
 				3AFD330B2A648B9A001C1E3C /* Extensions.swift in Sources */,
 				3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */,
@@ -333,10 +353,10 @@
 				3AF17AE32A6B05260057161E /* GraphError.swift in Sources */,
 				3A4022182A61B7B40073329E /* EdgesView.swift in Sources */,
 				3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */,
-				3AEDB1112A6B32B700F638CD /* ZoomableContainer.swift in Sources */,
 				3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */,
 				3AF17ADF2A6B02220057161E /* GraphFileService.swift in Sources */,
 				3A9C7BE22A6662CB00741C73 /* ControlPanelView.swift in Sources */,
+				3A2B36F92A6F242A00CBBAA6 /* ButtonStyles.swift in Sources */,
 				3AFD330D2A648BCB001C1E3C /* GraphModels.swift in Sources */,
 				3A91C6022A5BF468009D6D93 /* GraphView.swift in Sources */,
 			);
@@ -690,6 +710,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3A2B36FA2A6F2B4500CBBAA6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
 		3A91C6032A5BF535009D6D93 /* XCRemoteSwiftPackageReference "SWXMLHash" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/drmohundro/SWXMLHash.git";
@@ -701,6 +729,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3A2B36FB2A6F2B4500CBBAA6 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A2B36FA2A6F2B4500CBBAA6 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
+		};
 		3A91C6042A5BF535009D6D93 /* SWXMLHash */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3A91C6032A5BF535009D6D93 /* XCRemoteSwiftPackageReference "SWXMLHash" */;

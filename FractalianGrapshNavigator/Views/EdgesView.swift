@@ -65,8 +65,7 @@ struct EdgeView: View {
                 path.addLine(to: to)
             }
             .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-            .foregroundColor(Color.random())
-        
+            .foregroundColor(Color.white)
         }
     }
 }

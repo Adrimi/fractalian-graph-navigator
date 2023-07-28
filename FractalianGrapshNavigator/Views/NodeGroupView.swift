@@ -10,6 +10,7 @@ import SwiftUI
 struct NodeGroupView: View {
     let nodes: [Node]
     let updatePos: (NodePosition) -> Void
+    @Binding var nodeSpacing: CGFloat
 
     var body: some View {
         VStack(spacing: 0) {
@@ -17,7 +18,7 @@ struct NodeGroupView: View {
                 NodeView(node: node) { newPosition in
                     updatePos(NodePosition(node: node, position: newPosition))
                 }
-                .padding(.vertical, 16)
+                .padding(.vertical, nodeSpacing)
             }
         }
     }

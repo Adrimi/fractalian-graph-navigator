@@ -12,23 +12,26 @@ struct ColumnGraphStackView: View {
     let nodes: [Node]
     let depth: Int
     let updatePos: (NodePosition) -> Void
+    @Binding var nodeSpacing: CGFloat
 
     init(
         alreadyVisibleNodes: [Node],
         nodes: [Node],
         depth: Int,
-        updatePos: @escaping (NodePosition) -> Void
+        updatePos: @escaping (NodePosition) -> Void,
+        nodeSpacing: Binding<CGFloat>
     ) {
         self.alreadyVisibleNodes = alreadyVisibleNodes
         self.nodes = nodes
         self.depth = depth
         self.updatePos = updatePos
+        _nodeSpacing = nodeSpacing
     }
 
     var body: some View {
-        if depth > 0 {
-            NodeGroupView(nodes: nodes, updatePos: updatePos)
+        NodeGroupView(nodes: nodes, updatePos: updatePos, nodeSpacing: $nodeSpacing)
 
+        if depth >= 0 {
             ColumnGraphStackView(
                 alreadyVisibleNodes: alreadyVisibleNodes + nodes,
                 nodes: nodes
@@ -37,9 +40,9 @@ struct ColumnGraphStackView: View {
                     .filter { !nodes.contains($0) }
                     .unique(),
                 depth: depth - 1,
-                updatePos: updatePos
+                updatePos: updatePos,
+                nodeSpacing: $nodeSpacing
             )
         }
     }
 }
-
