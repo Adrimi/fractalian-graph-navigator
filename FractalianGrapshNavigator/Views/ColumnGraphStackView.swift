@@ -32,9 +32,9 @@ struct ColumnGraphStackView: View {
     }
 
     var body: some View {
-        NodeGroupView(nodes: nodes, updatePos: updatePos, nodeSpacing: $nodeSpacing, namespace: namespace)
+        if depth > 0 && !nodes.isEmpty {
+            NodeGroupView(nodes: nodes, updatePos: updatePos, nodeSpacing: $nodeSpacing, namespace: namespace)
 
-        if depth >= 0 {
             ColumnGraphStackView(
                 alreadyVisibleNodes: alreadyVisibleNodes + nodes,
                 nodes: nodes

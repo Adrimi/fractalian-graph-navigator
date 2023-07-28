@@ -192,7 +192,7 @@ struct GraphView: View {
             }
             .coordinateSpace(name: "Graph")
         }
-        .padding(.leading, 8)
+        .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.color4)
