@@ -25,59 +25,32 @@ struct ControlPanelView: View {
 
     var body: some View {
         DynamicStack {
-            Button("Graph Settings") {
+            Button {
                 isPresentingGeneratePanel = true
+            } label: {
+                Label("Settings", systemImage: "slider.horizontal.3")
             }
             .buttonStyle(MainButtonStyle())
 
-            Button("Go to first node") {
+            Button {
                 withAnimation {
                     focusedNode = nil
                 }
+            } label: {
+                Label("To Start", systemImage: "arrowshape.turn.up.backward")
             }
             .buttonStyle(SecondaryButtonStyle())
 
             if graphMode == .generated {
-                Button("Generate new graph") {
+                Button {
                     loadGraph()
+                } label: {
+                    Label("New Graph", systemImage: "sparkles")
                 }
                 .buttonStyle(SecondaryButtonStyle())
             }
 
-            HStack {
-                Text("Graph Depth")
-                    .font(.headline)
-                    .foregroundColor(Color.white)
-
-                Button {
-                    withAnimation(.spring()) {
-                        depth -= 1
-                    }
-                } label: {
-                    Text("-")
-                        .frame(width: 22, height: 22)
-                }
-                .buttonStyle(SecondaryButtonStyle())
-
-                Text("\(depth)")
-                    .font(.title2)
-                    .foregroundColor(Color.white)
-
-                Button {
-                    withAnimation(.spring()) {
-                        depth += 1
-                    }
-                } label: {
-                    Text("+")
-                        .frame(width: 22, height: 22)
-                }
-                .buttonStyle(MainButtonStyle())
-            }
-            .padding(8)
-            .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color.gray.opacity(0.1))
-            )
+            makeDepthControl()
         }
         .sheet(isPresented: $isPresentingGeneratePanel) {
             ScrollView {
@@ -88,7 +61,7 @@ struct ControlPanelView: View {
             .presentationDragIndicator(.visible)
         }
     }
-    
+
     @ViewBuilder
     private func makeFullPanel() -> some View {
         VStack(alignment: .center, spacing: 16) {
@@ -115,14 +88,14 @@ struct ControlPanelView: View {
             }
 
             makeInputView("Default depth", $defaultDepth)
-            makeSliderView("Node spacing", $nodeSpacing, 4...200)
-            makeSliderView("Depth spacing", $depthSpacing, 4...200)
-            
+            makeSliderView("Node spacing", $nodeSpacing, 4 ... 200)
+            makeSliderView("Depth spacing", $depthSpacing, 4 ... 200)
+
             Toggle("Disable position update", isOn: $disablePosUpdate)
                 .toggleStyle(SwitchToggleStyle(tint: Color.color3))
                 .padding(.horizontal, 8)
 
-            Button("Generate graph") {
+            Button("Generate Graph!") {
                 loadGraph()
                 isPresentingGeneratePanel = false
             }
@@ -130,6 +103,44 @@ struct ControlPanelView: View {
 
             Spacer()
         }
+    }
+
+    @ViewBuilder
+    private func makeDepthControl() -> some View {
+        HStack {
+            Text("Depth")
+                .font(.headline)
+                .foregroundColor(Color.white)
+
+            Button {
+                withAnimation(.spring()) {
+                    depth -= 1
+                }
+            } label: {
+                Text("-")
+                    .frame(width: 22, height: 22)
+            }
+            .buttonStyle(SecondaryButtonStyle())
+
+            Text("\(depth)")
+                .font(.title2)
+                .foregroundColor(Color.white)
+
+            Button {
+                withAnimation(.spring()) {
+                    depth += 1
+                }
+            } label: {
+                Text("+")
+                    .frame(width: 22, height: 22)
+            }
+            .buttonStyle(MainButtonStyle())
+        }
+        .padding(8)
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.gray.opacity(0.1))
+        )
     }
 
     @ViewBuilder
@@ -142,7 +153,7 @@ struct ControlPanelView: View {
             makeTextField(text)
         }
     }
-    
+
     @ViewBuilder
     private func makeSliderView(_ title: String, _ value: Binding<CGFloat>, _ range: ClosedRange<CGFloat>) -> some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -152,7 +163,7 @@ struct ControlPanelView: View {
 
             HStack(spacing: 8) {
                 Text("\(Int(range.lowerBound))")
-                Slider(value: value.animation(.spring()), in: range)
+                Slider(value: value, in: range)
                 Text("\(Int(range.upperBound))")
             }
             .font(.footnote)

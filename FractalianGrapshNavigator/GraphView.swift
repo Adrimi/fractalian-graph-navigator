@@ -86,6 +86,8 @@ struct GraphView: View {
                 loadGraph: { loadGraph() }
             )
             
+            infoView()
+
             ZStack {
                 ScrollView([.horizontal, .vertical], showsIndicators: false) {
                     columnGraph()
@@ -118,7 +120,7 @@ struct GraphView: View {
             .clipShape(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
             )
-            .padding()
+            .padding(.horizontal, 16)
             .shadow(radius: 16, x: 4, y: 4)
 
             Spacer()
@@ -151,11 +153,13 @@ struct GraphView: View {
     @ViewBuilder
     func columnGraph() -> some View {
         ZStack(alignment: .center) {
-            EdgesView(
-                positions: $nodePositions,
-                edges: $visibleEdges
-            )
-            .id(nodePositions.hashValue)
+            if !disablePosUpdate {
+                EdgesView(
+                    positions: $nodePositions,
+                    edges: $visibleEdges
+                )
+                .id(nodePositions.hashValue)
+            }
 
             HStack(spacing: $depthSpacing.asCGFloat.wrappedValue) {
                 ColumnGraphStackView(
@@ -170,10 +174,28 @@ struct GraphView: View {
                     nodeSpacing: $nodeSpacing.asCGFloat
                 )
             }
-            .id(focusedNode?.id)
             .coordinateSpace(name: "Graph")
         }
+        .padding(.leading, 8)
         .border(Color.red, width: 2)
+    }
+    
+    @ViewBuilder
+    func infoView() -> some View {
+        DynamicStack {
+            Text("Total Nodes count: \(graph?.nodes.count ?? 0)")
+            Text("Total Edges count: \(graph?.edges.count ?? 0)")
+            Text("Visible Nodes count: \((focusedNode?.getAllChildrenOfChildren().count ?? 0) + 1)")
+            Text("Visible Edges count: \(visibleEdges.count)")
+        }
+        .font(.caption)
+        .foregroundColor(Color.white)
+        .padding(8)
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.gray.opacity(0.1))
+        )
+        .padding(8)
     }
 
     func refreshGraph() {

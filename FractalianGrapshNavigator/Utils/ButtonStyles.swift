@@ -14,6 +14,7 @@ struct MainButtonStyle: ButtonStyle {
             .font(Font.headline)
             .foregroundColor(Color.white)
             .padding(8)
+            .frame(height: 40)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(Color.color5)
@@ -29,6 +30,7 @@ struct SecondaryButtonStyle: ButtonStyle {
             .font(Font.headline)
             .foregroundColor(Color.white)
             .padding(8)
+            .frame(height: 40)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(Color.gray.opacity(0.4))
