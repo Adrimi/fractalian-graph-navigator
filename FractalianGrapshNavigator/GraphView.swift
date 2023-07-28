@@ -34,7 +34,7 @@ struct GraphView: View {
     @State var disablePosUpdate: Bool = false
 
     private let maxZoom = 0.2
-    private let minZoom = 5.0
+    private let minZoom = 2.0
     @State private var currentZoom = 0.0
     @State private var totalZoom = 1.0
 
@@ -193,7 +193,15 @@ struct GraphView: View {
             .coordinateSpace(name: "Graph")
         }
         .padding(.leading, 8)
-        .border(Color.red, width: 2)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.color4)
+                .opacity(0.3)
+                .mask(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .strokeBorder(lineWidth: 2)
+                )
+        )
     }
 
     func refreshGraph() {
