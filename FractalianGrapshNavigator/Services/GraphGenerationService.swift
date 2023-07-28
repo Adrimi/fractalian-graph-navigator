@@ -8,8 +8,21 @@
 import Foundation
 
 class GraphGenerationService {
-    static let filename: String = "graph"
+    func generateGraph(genNodesCount: String, genEdgesCount: String) async throws -> Graph {
+        guard let numberOfNodes = Int(genNodesCount),
+              let numberOfEdges = Int(genEdgesCount)
+        else {
+            throw GraphError.notANumber
+        }
 
+        let graphService = GraphGenerationService()
+        let graph = try await graphService.generateGraph(
+            numberOfNodes: numberOfNodes,
+            numberOfEdges: numberOfEdges
+        )
+        return graph
+    }
+    
     func generateGraph(numberOfNodes: Int, numberOfEdges: Int) async throws -> Graph {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -43,7 +56,7 @@ class GraphGenerationService {
             while sourceNodeIndex == targetNodeIndex {
                 targetNodeIndex = Int(arc4random_uniform(UInt32(nodes.count)))
             }
-            
+
             // combination without repetition
             while edges.contains(where: { $0.source == nodes[sourceNodeIndex].id && $0.target == nodes[targetNodeIndex].id }) {
                 sourceNodeIndex = Int(arc4random_uniform(UInt32(nodes.count)))
@@ -57,7 +70,7 @@ class GraphGenerationService {
 
             edges.append(edge)
         }
-        
+
         return edges
     }
 }

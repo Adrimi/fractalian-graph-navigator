@@ -32,9 +32,9 @@ struct Node: Hashable, Equatable {
 }
 
 extension Node {
-    func getAllChildrenOfChildren() -> [Node] {
-        children.reduce(children) { partialResult, node in
-            partialResult + node.getAllChildrenOfChildren()
+    func withAllTree() -> [Node] {
+        CollectionOfOne(self) + children.reduce(children) { partialResult, node in
+            partialResult + node.withAllTree()
         }
     }
 }

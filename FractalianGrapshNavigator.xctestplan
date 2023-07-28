@@ -12,7 +12,13 @@
 
   },
   "testTargets" : [
-
+    {
+      "target" : {
+        "containerPath" : "container:FractalianGrapshNavigator.xcodeproj",
+        "identifier" : "3A91C5E12A5BF421009D6D93",
+        "name" : "FractalianGrapshNavigatorTests"
+      }
+    }
   ],
   "version" : 1
 }

@@ -90,3 +90,12 @@ public struct VisualEffect: NSViewRepresentable {
 }
 #endif
 
+
+extension Binding where Value == String {
+    var asCGFloat: Binding<CGFloat> {
+        .init(
+            get: { CGFloat(Double(wrappedValue) ?? 0) },
+            set: { wrappedValue = "\($0)" }
+        )
+    }
+}

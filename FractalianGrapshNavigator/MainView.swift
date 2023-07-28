@@ -1,5 +1,5 @@
 //
-//  GraphView.swift
+//  MainView.swift
 //  FractalianGrapshNavigator
 //
 //  Created by Adrian Szymanowski on 10/07/2023.
@@ -12,7 +12,7 @@ enum GraphMode: String, Hashable {
     case generated
 }
 
-struct GraphView: View {
+struct MainView: View {
     @Namespace var geometry
 
     @AppStorage("graphMode") var graphMode: GraphMode = .file
@@ -33,51 +33,8 @@ struct GraphView: View {
     @State var isLoading: Bool = false
     @State var disablePosUpdate: Bool = false
 
-    private let maxZoom = 0.2
-    private let minZoom = 2.0
-    @State private var currentZoom = 0.0
-    @State private var totalZoom = 1.0
-
-    var magnification: some Gesture {
-        MagnificationGesture()
-            .onChanged { value in
-                guard currentZoom > maxZoom - 1.0 else {
-                    return
-                }
-                guard currentZoom < minZoom - 1.0 else {
-                    return
-                }
-                currentZoom = value - 1.0
-            }
-            .onEnded { _ in
-                withAnimation(.spring()) {
-                    totalZoom += currentZoom
-                    currentZoom = 0
-                    if totalZoom < maxZoom {
-                        totalZoom = maxZoom
-                    }
-                    if totalZoom > minZoom {
-                        totalZoom = minZoom
-                    }
-                }
-            }
-    }
-
-    var doubleTapResetGesture: some Gesture {
-        TapGesture(count: 2)
-            .onEnded {
-                withAnimation(.spring()) {
-                    totalZoom = 1.0
-                }
-            }
-    }
-
     var visibleNodes: [Node] {
-        guard let focusedNode = focusedNode else {
-            return graph?.nodes ?? []
-        }
-
-        return CollectionOfOne(focusedNode) + focusedNode.getAllChildrenOfChildren()
+        focusedNode?.withAllTree() ?? []
     }
 
     init() {
@@ -107,7 +64,17 @@ struct GraphView: View {
                 visibleEdges: visibleEdges
             )
 
-            graphContentView()
+            GraphView(
+                nodePositions: $nodePositions,
+                visibleEdges: $visibleEdges,
+                disablePosUpdate: $disablePosUpdate,
+                focusedNode: $focusedNode,
+                depthSpacing: $depthSpacing.asCGFloat,
+                nodeSpacing: $nodeSpacing.asCGFloat,
+                depth: $depth,
+                isLoading: $isLoading,
+                geometry: geometry
+            )
 
             Spacer()
         }
@@ -136,74 +103,6 @@ struct GraphView: View {
         )
     }
 
-    @ViewBuilder
-    func graphContentView() -> some View {
-        ZStack {
-            ScrollViewReader { proxy in
-                ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                    columnGraph()
-                        .drawingGroup()
-                        .scaleEffect(currentZoom + totalZoom)
-                        .id("columnGraph")
-                        .onChange(of: depth) { _ in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                proxy.scrollTo("columnGraph", anchor: .leading)
-                            }
-                        }
-                }
-            }
-            .gesture(magnification)
-            .gesture(doubleTapResetGesture)
-            .background(Color.color2)
-
-            LoadingView(isLoading: $isLoading)
-        }
-        .clipShape(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-        .padding(.horizontal, 16)
-        .shadow(radius: 16, x: 4, y: 4)
-    }
-
-    @ViewBuilder
-    func columnGraph() -> some View {
-        ZStack(alignment: .center) {
-            if !disablePosUpdate {
-                EdgesView(
-                    positions: $nodePositions,
-                    edges: $visibleEdges
-                )
-                .id(nodePositions.hashValue)
-            }
-
-            HStack(spacing: $depthSpacing.asCGFloat.wrappedValue) {
-                ColumnGraphStackView(
-                    alreadyVisibleNodes: [],
-                    nodes: [focusedNode].compactMap { $0 },
-                    depth: depth,
-                    updatePos: { newNodePosition in
-                        guard !disablePosUpdate else { return }
-                        nodePositions.removeAll(where: { $0 == newNodePosition })
-                        nodePositions.append(newNodePosition)
-                    },
-                    nodeSpacing: $nodeSpacing.asCGFloat,
-                    namespace: geometry
-                )
-            }
-            .coordinateSpace(name: "Graph")
-        }
-        .padding(8)
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.color4)
-                .opacity(0.3)
-                .mask(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .strokeBorder(lineWidth: 2)
-                )
-        )
-    }
-
     func refreshGraph() {
         setLoading(true)
         Task(priority: .background) {
@@ -223,7 +122,7 @@ struct GraphView: View {
         }
         Task(priority: .background) {
             do {
-                self.focusedNode = nil
+//                self.focusedNode = nil
                 self.graph = try await graphFromSelectedSource()
                 try await buildGraphStructure()
                 withAnimation {
@@ -254,7 +153,7 @@ struct GraphView: View {
         case .file:
             return try await GraphFileService().loadGraphFromDefaultFile()
         case .generated:
-            return try await GraphMapper().generateGraph(
+            return try await GraphGenerationService().generateGraph(
                 genNodesCount: genNodesCount,
                 genEdgesCount: genEdgesCount
             )
@@ -273,7 +172,7 @@ struct GraphView: View {
     }
 
     private func presentableNodes(mainNode: Node) async -> [Node] {
-        CollectionOfOne(mainNode) + mainNode.getAllChildrenOfChildren().unique()
+        mainNode.withAllTree().unique()
     }
 
     private func presentableEdges(visibleNodes: [Node], allEdges: [Edge]) async -> [Edge] {
@@ -324,15 +223,6 @@ struct GraphView: View {
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        GraphView()
-    }
-}
-
-extension Binding where Value == String {
-    var asCGFloat: Binding<CGFloat> {
-        .init(
-            get: { CGFloat(Double(wrappedValue) ?? 0) },
-            set: { wrappedValue = "\($0)" }
-        )
+        MainView()
     }
 }

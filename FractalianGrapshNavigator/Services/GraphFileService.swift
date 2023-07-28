@@ -10,19 +10,22 @@ import SWXMLHash
 
 final class GraphFileService {
     static let filename: String = "graph"
-    
-    func loadGraphFromDefaultFile() async throws -> Graph {
-        try await loadGraphFromFile(Self.filename)
-    }
-    
-    func loadGraphFromFile(_ fileName: String) async throws -> Graph {
-        try await withCheckedThrowingContinuation { continuation in
-            guard let url = Bundle.main.url(forResource: fileName, withExtension: "xml") else {
-                continuation.resume(throwing: GraphError.fileNotFound)
-                return
-            }
 
-            guard let xmlData = try? Data(contentsOf: url) else {
+    func loadGraphFromDefaultFile() async throws -> Graph {
+        try await loadGraph(filename: Self.filename)
+    }
+
+    func loadGraph(filename: String, in bundle: Bundle = .main) async throws -> Graph {
+        guard let url = bundle.url(forResource: filename, withExtension: "xml") else {
+            throw GraphError.fileNotFound
+        }
+
+        return try await loadGraph(path: url)
+    }
+
+    func loadGraph(path: URL) async throws -> Graph {
+        try await withCheckedThrowingContinuation { continuation in
+            guard let xmlData = try? Data(contentsOf: path) else {
                 continuation.resume(throwing: GraphError.invalidGraphMLFile)
                 return
             }
@@ -31,6 +34,11 @@ final class GraphFileService {
 
             let graphML = xml["graphml"]
             let graphElement = graphML["graph"]
+            guard graphElement.element != nil else {
+                continuation.resume(throwing: GraphError.invalidGraphMLFile)
+                return
+            }
+
             let edgesElements = graphElement["edge"]
             let nodesElements = graphElement["node"]
 
@@ -41,7 +49,7 @@ final class GraphFileService {
 
                 return Node(id: id)
             }
-            
+
             let edges: [Edge] = edgesElements.all.compactMap { edge -> Edge? in
                 guard let source = edge.element?.attribute(by: "source")?.text,
                       let target = edge.element?.attribute(by: "target")?.text
