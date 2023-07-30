@@ -1,5 +1,5 @@
 //
-//  NodeView.swift
+//  ColumnGraphNodeView.swift
 //  FractalianGrapshNavigator
 //
 //  Created by Adrian Szymanowski on 18/07/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NodeView: View {
+struct ColumnGraphNodeView: View {
     enum Constants {
         static let spacing: CGFloat = 16
         static let cornerRadius: CGFloat = 8
@@ -67,7 +67,7 @@ struct NodeView_Previews: PreviewProvider {
         @Namespace var nspace
 
         var body: some View {
-            NodeView(node: Node(id: "1"), namespace: nspace, updatePos: { _ in })
+            ColumnGraphNodeView(node: Node(id: "1"), namespace: nspace, updatePos: { _ in })
         }
     }
 

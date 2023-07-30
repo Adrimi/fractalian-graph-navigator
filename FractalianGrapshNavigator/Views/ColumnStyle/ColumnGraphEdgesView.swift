@@ -1,5 +1,5 @@
 //
-//  EdgesView.swift
+//  ColumnGraphEdgesView.swift
 //  FractalianGrapshNavigator
 //
 //  Created by Adrian Szymanowski on 14/07/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EdgesView: View {
+struct ColumnGraphEdgesView: View {
     @Binding var positions: [NodePosition]
     @Binding var edges: [Edge]
     let debug: Bool
@@ -79,7 +79,7 @@ struct EdgesView_Previews: PreviewProvider {
     }
     
     static var previews: some View {
-        EdgesView(
+        ColumnGraphEdgesView(
             positions: .constant(nodesEdges.0),
             edges: .constant(nodesEdges.1),
             debug: true

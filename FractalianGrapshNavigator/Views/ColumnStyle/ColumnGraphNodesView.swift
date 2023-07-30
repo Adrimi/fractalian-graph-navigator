@@ -1,5 +1,5 @@
 //
-//  ColumnGraphStackView.swift
+//  ColumnGraphNodesView.swift
 //  FractalianGrapshNavigator
 //
 //  Created by Adrian Szymanowski on 18/07/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ColumnGraphStackView: View {
+struct ColumnGraphNodesView: View {
     var alreadyVisibleNodes: [Node]
     let nodes: [Node]
     let depth: Int
@@ -33,9 +33,15 @@ struct ColumnGraphStackView: View {
 
     var body: some View {
         if depth > 0 && !nodes.isEmpty {
-            NodeGroupView(nodes: nodes, updatePos: updatePos, nodeSpacing: $nodeSpacing, namespace: namespace)
+            VStack(alignment: .center, spacing: nodeSpacing) {
+                ForEach(nodes, id: \.id) { node in
+                    ColumnGraphNodeView(node: node, namespace: namespace) { newPosition in
+                        updatePos(NodePosition(node: node, position: newPosition))
+                    }
+                }
+            }
 
-            ColumnGraphStackView(
+            ColumnGraphNodesView(
                 alreadyVisibleNodes: alreadyVisibleNodes + nodes,
                 nodes: nodes
                     .flatMap(\.children)

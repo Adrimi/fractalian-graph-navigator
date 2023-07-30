@@ -1,5 +1,5 @@
 //
-//  GraphContentView.swift
+//  ColumnGraphView.swift
 //  FractalianGrapshNavigator
 //
 //  Created by Adrian Szymanowski on 28/07/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GraphContentView: View {
+struct ColumnGraphView: View {
     @Binding var nodePositions: [NodePosition]
     @Binding var visibleEdges: [Edge]
     @Binding var disablePosUpdate: Bool
@@ -20,7 +20,7 @@ struct GraphContentView: View {
     var body: some View {
         ZStack(alignment: .center) {
             if !disablePosUpdate {
-                EdgesView(
+                ColumnGraphEdgesView(
                     positions: $nodePositions,
                     edges: $visibleEdges
                 )
@@ -28,7 +28,7 @@ struct GraphContentView: View {
             }
 
             HStack(spacing: depthSpacing) {
-                ColumnGraphStackView(
+                ColumnGraphNodesView(
                     alreadyVisibleNodes: [],
                     nodes: [focusedNode].compactMap { $0 },
                     depth: depth,

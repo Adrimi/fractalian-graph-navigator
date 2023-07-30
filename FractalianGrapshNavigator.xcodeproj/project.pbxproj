@@ -12,12 +12,16 @@
 		3A2B36F72A6F241000CBBAA6 /* DynamicStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B36F62A6F241000CBBAA6 /* DynamicStack.swift */; };
 		3A2B36F92A6F242A00CBBAA6 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2B36F82A6F242A00CBBAA6 /* ButtonStyles.swift */; };
 		3A2CD3522A5C83AB00D0F2F8 /* graph_max.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */; };
-		3A4022182A61B7B40073329E /* EdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4022172A61B7B40073329E /* EdgesView.swift */; };
+		3A4022182A61B7B40073329E /* ColumnGraphEdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4022172A61B7B40073329E /* ColumnGraphEdgesView.swift */; };
+		3A491C312A76F18F0067773A /* ScrollThatFitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A491C302A76F18F0067773A /* ScrollThatFitsView.swift */; };
+		3A491C332A76F1A60067773A /* StackGraphLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A491C322A76F1A60067773A /* StackGraphLayerView.swift */; };
+		3A491C352A76F1B70067773A /* StackGraphNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A491C342A76F1B70067773A /* StackGraphNodeView.swift */; };
 		3A76EF582A7409CF00EC9327 /* test_graph.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A009C432A5D325200ACC7C9 /* test_graph.xml */; };
 		3A76EF592A7409D100EC9327 /* invalidGraph.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CEC362A73E6EC00BCF18E /* invalidGraph.xml */; };
 		3A76EF5C2A740C7300EC9327 /* GraphGenerationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A76EF5B2A740C7300EC9327 /* GraphGenerationServiceTests.swift */; };
-		3A76EF5E2A740E1D00EC9327 /* GraphContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A76EF5D2A740E1D00EC9327 /* GraphContentView.swift */; };
+		3A76EF5E2A740E1D00EC9327 /* ColumnGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A76EF5D2A740E1D00EC9327 /* ColumnGraphView.swift */; };
 		3A76EF602A740EED00EC9327 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A76EF5F2A740EED00EC9327 /* GraphView.swift */; };
+		3A76EF642A74143700EC9327 /* StackGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A76EF632A74143700EC9327 /* StackGraphView.swift */; };
 		3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */; };
 		3A91C5D92A5BF420009D6D93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C5D82A5BF420009D6D93 /* Assets.xcassets */; };
 		3A91C5DD2A5BF420009D6D93 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C5DC2A5BF420009D6D93 /* Preview Assets.xcassets */; };
@@ -26,9 +30,8 @@
 		3A91C6052A5BF535009D6D93 /* SWXMLHash in Frameworks */ = {isa = PBXBuildFile; productRef = 3A91C6042A5BF535009D6D93 /* SWXMLHash */; };
 		3A91C6072A5BF64F009D6D93 /* graph.xml in Resources */ = {isa = PBXBuildFile; fileRef = 3A91C6062A5BF64F009D6D93 /* graph.xml */; };
 		3A9C7BE22A6662CB00741C73 /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */; };
-		3A9C7BE42A6662E200741C73 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE32A6662E200741C73 /* NodeView.swift */; };
-		3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE52A66631600741C73 /* NodeGroupView.swift */; };
-		3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */; };
+		3A9C7BE42A6662E200741C73 /* ColumnGraphNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE32A6662E200741C73 /* ColumnGraphNodeView.swift */; };
+		3A9C7BE82A66632E00741C73 /* ColumnGraphNodesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C7BE72A66632E00741C73 /* ColumnGraphNodesView.swift */; };
 		3AB200F52A73C1AE00EBFE8B /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB200F42A73C1AE00EBFE8B /* LoadingView.swift */; };
 		3AB200F72A73C23900EBFE8B /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB200F62A73C23900EBFE8B /* InfoView.swift */; };
 		3AF17ADF2A6B02220057161E /* GraphFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF17ADE2A6B02220057161E /* GraphFileService.swift */; };
@@ -62,11 +65,15 @@
 		3A2B36F62A6F241000CBBAA6 /* DynamicStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicStack.swift; sourceTree = "<group>"; };
 		3A2B36F82A6F242A00CBBAA6 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		3A2CD3512A5C83AB00D0F2F8 /* graph_max.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = graph_max.xml; sourceTree = "<group>"; };
-		3A4022172A61B7B40073329E /* EdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgesView.swift; sourceTree = "<group>"; };
+		3A4022172A61B7B40073329E /* ColumnGraphEdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphEdgesView.swift; sourceTree = "<group>"; };
+		3A491C302A76F18F0067773A /* ScrollThatFitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollThatFitsView.swift; sourceTree = "<group>"; };
+		3A491C322A76F1A60067773A /* StackGraphLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackGraphLayerView.swift; sourceTree = "<group>"; };
+		3A491C342A76F1B70067773A /* StackGraphNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackGraphNodeView.swift; sourceTree = "<group>"; };
 		3A4CEC362A73E6EC00BCF18E /* invalidGraph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = invalidGraph.xml; sourceTree = "<group>"; };
 		3A76EF5B2A740C7300EC9327 /* GraphGenerationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphGenerationServiceTests.swift; sourceTree = "<group>"; };
-		3A76EF5D2A740E1D00EC9327 /* GraphContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphContentView.swift; sourceTree = "<group>"; };
+		3A76EF5D2A740E1D00EC9327 /* ColumnGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphView.swift; sourceTree = "<group>"; };
 		3A76EF5F2A740EED00EC9327 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		3A76EF632A74143700EC9327 /* StackGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackGraphView.swift; sourceTree = "<group>"; };
 		3A91C5D12A5BF41E009D6D93 /* FractalianGrapshNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FractalianGrapshNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractalianGrapshNavigatorApp.swift; sourceTree = "<group>"; };
 		3A91C5D82A5BF420009D6D93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,9 +85,8 @@
 		3A91C6012A5BF468009D6D93 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		3A91C6062A5BF64F009D6D93 /* graph.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = graph.xml; sourceTree = "<group>"; };
 		3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
-		3A9C7BE32A6662E200741C73 /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
-		3A9C7BE52A66631600741C73 /* NodeGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeGroupView.swift; sourceTree = "<group>"; };
-		3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphStackView.swift; sourceTree = "<group>"; };
+		3A9C7BE32A6662E200741C73 /* ColumnGraphNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphNodeView.swift; sourceTree = "<group>"; };
+		3A9C7BE72A66632E00741C73 /* ColumnGraphNodesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnGraphNodesView.swift; sourceTree = "<group>"; };
 		3AB200F42A73C1AE00EBFE8B /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		3AB200F62A73C23900EBFE8B /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		3AF17ADE2A6B02220057161E /* GraphFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphFileService.swift; sourceTree = "<group>"; };
@@ -123,8 +129,30 @@
 				3A2B36F12A6F005D00CBBAA6 /* Colors.swift */,
 				3A2B36F82A6F242A00CBBAA6 /* ButtonStyles.swift */,
 				3AB200F42A73C1AE00EBFE8B /* LoadingView.swift */,
+				3A491C302A76F18F0067773A /* ScrollThatFitsView.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		3A491C2E2A76F1340067773A /* ColumnStyle */ = {
+			isa = PBXGroup;
+			children = (
+				3A9C7BE72A66632E00741C73 /* ColumnGraphNodesView.swift */,
+				3A9C7BE32A6662E200741C73 /* ColumnGraphNodeView.swift */,
+				3A76EF5D2A740E1D00EC9327 /* ColumnGraphView.swift */,
+				3A4022172A61B7B40073329E /* ColumnGraphEdgesView.swift */,
+			);
+			path = ColumnStyle;
+			sourceTree = "<group>";
+		};
+		3A491C2F2A76F13B0067773A /* StackStyle */ = {
+			isa = PBXGroup;
+			children = (
+				3A76EF632A74143700EC9327 /* StackGraphView.swift */,
+				3A491C342A76F1B70067773A /* StackGraphNodeView.swift */,
+				3A491C322A76F1A60067773A /* StackGraphLayerView.swift */,
+			);
+			path = StackStyle;
 			sourceTree = "<group>";
 		};
 		3A76EF5A2A740AD100EC9327 /* graphs */ = {
@@ -177,7 +205,6 @@
 			isa = PBXGroup;
 			children = (
 				3A91C5D42A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift */,
-				3A91C6012A5BF468009D6D93 /* MainView.swift */,
 				3A9C7BEB2A66639000741C73 /* Graphs */,
 				3A76EF622A740FF800EC9327 /* Models */,
 				3A9C7BEA2A66637900741C73 /* Resources */,
@@ -210,14 +237,12 @@
 		3A9C7BE92A66635800741C73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3A4022172A61B7B40073329E /* EdgesView.swift */,
-				3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */,
-				3A9C7BE32A6662E200741C73 /* NodeView.swift */,
-				3A9C7BE52A66631600741C73 /* NodeGroupView.swift */,
-				3A9C7BE72A66632E00741C73 /* ColumnGraphStackView.swift */,
+				3A91C6012A5BF468009D6D93 /* MainView.swift */,
 				3AB200F62A73C23900EBFE8B /* InfoView.swift */,
-				3A76EF5D2A740E1D00EC9327 /* GraphContentView.swift */,
+				3A9C7BE12A6662CB00741C73 /* ControlPanelView.swift */,
 				3A76EF5F2A740EED00EC9327 /* GraphView.swift */,
+				3A491C2F2A76F13B0067773A /* StackStyle */,
+				3A491C2E2A76F1340067773A /* ColumnStyle */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -383,23 +408,26 @@
 			files = (
 				3A00B3D22A65B9FD00F1CA44 /* GraphGenerationService.swift in Sources */,
 				3A2B36F22A6F005D00CBBAA6 /* Colors.swift in Sources */,
+				3A491C312A76F18F0067773A /* ScrollThatFitsView.swift in Sources */,
 				3A2B36F72A6F241000CBBAA6 /* DynamicStack.swift in Sources */,
 				3AB200F52A73C1AE00EBFE8B /* LoadingView.swift in Sources */,
 				3AFD330B2A648B9A001C1E3C /* Extensions.swift in Sources */,
 				3A91C5D52A5BF41E009D6D93 /* FractalianGrapshNavigatorApp.swift in Sources */,
-				3A9C7BE42A6662E200741C73 /* NodeView.swift in Sources */,
+				3A9C7BE42A6662E200741C73 /* ColumnGraphNodeView.swift in Sources */,
+				3A491C332A76F1A60067773A /* StackGraphLayerView.swift in Sources */,
 				3AF17AE32A6B05260057161E /* GraphError.swift in Sources */,
-				3A4022182A61B7B40073329E /* EdgesView.swift in Sources */,
-				3A9C7BE62A66631600741C73 /* NodeGroupView.swift in Sources */,
-				3A76EF5E2A740E1D00EC9327 /* GraphContentView.swift in Sources */,
-				3A9C7BE82A66632E00741C73 /* ColumnGraphStackView.swift in Sources */,
+				3A4022182A61B7B40073329E /* ColumnGraphEdgesView.swift in Sources */,
+				3A76EF5E2A740E1D00EC9327 /* ColumnGraphView.swift in Sources */,
+				3A9C7BE82A66632E00741C73 /* ColumnGraphNodesView.swift in Sources */,
 				3AF17ADF2A6B02220057161E /* GraphFileService.swift in Sources */,
 				3A9C7BE22A6662CB00741C73 /* ControlPanelView.swift in Sources */,
 				3A76EF602A740EED00EC9327 /* GraphView.swift in Sources */,
 				3A2B36F92A6F242A00CBBAA6 /* ButtonStyles.swift in Sources */,
 				3AFD330D2A648BCB001C1E3C /* GraphModels.swift in Sources */,
 				3AB200F72A73C23900EBFE8B /* InfoView.swift in Sources */,
+				3A76EF642A74143700EC9327 /* StackGraphView.swift in Sources */,
 				3A91C6022A5BF468009D6D93 /* MainView.swift in Sources */,
+				3A491C352A76F1B70067773A /* StackGraphNodeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

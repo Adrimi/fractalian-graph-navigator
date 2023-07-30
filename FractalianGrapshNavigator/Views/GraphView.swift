@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct GraphView: View {
+    @Binding var graphStyle: GraphStyle
     @Binding var nodePositions: [NodePosition]
     @Binding var visibleEdges: [Edge]
     @Binding var disablePosUpdate: Bool
@@ -59,31 +60,14 @@ struct GraphView: View {
 
     var body: some View {
         ZStack {
-            ScrollViewReader { proxy in
-                ScrollView([.horizontal, .vertical], showsIndicators: false) {
-                    GraphContentView(
-                        nodePositions: $nodePositions,
-                        visibleEdges: $visibleEdges,
-                        disablePosUpdate: $disablePosUpdate,
-                        focusedNode: $focusedNode,
-                        depthSpacing: $depthSpacing,
-                        nodeSpacing: $nodeSpacing,
-                        depth: depth,
-                        namespace: geometry
-                    )
-                    .drawingGroup()
-                    .scaleEffect(currentZoom + totalZoom)
-                    .id("columnGraph")
-                    .onChange(of: depth) { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            proxy.scrollTo("columnGraph", anchor: .leading)
-                        }
-                    }
-                }
+            Color.color2
+            
+            switch graphStyle {
+            case .column:
+                makeColumnGraph()
+            case .stack:
+                makeStackGraph()
             }
-            .gesture(magnification)
-            .gesture(doubleTapResetGesture)
-            .background(Color.color2)
 
             LoadingView(isLoading: $isLoading)
         }
@@ -92,5 +76,40 @@ struct GraphView: View {
         )
         .padding(.horizontal, 16)
         .shadow(radius: 16, x: 4, y: 4)
+    }
+    
+    private func makeStackGraph() -> some View {
+        StackGraphView(
+            focusedNode: $focusedNode,
+            nodeSpacing: $nodeSpacing,
+            depth: depth
+        )
+    }
+    
+    private func makeColumnGraph() -> some View {
+        ScrollViewReader { proxy in
+            ScrollView([.horizontal, .vertical], showsIndicators: false) {
+                ColumnGraphView(
+                    nodePositions: $nodePositions,
+                    visibleEdges: $visibleEdges,
+                    disablePosUpdate: $disablePosUpdate,
+                    focusedNode: $focusedNode,
+                    depthSpacing: $depthSpacing,
+                    nodeSpacing: $nodeSpacing,
+                    depth: depth,
+                    namespace: geometry
+                )
+                .drawingGroup()
+                .scaleEffect(currentZoom + totalZoom)
+                .id("columnGraph")
+                .onChange(of: depth) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        proxy.scrollTo("columnGraph", anchor: .leading)
+                    }
+                }
+            }
+        }
+        .gesture(magnification)
+        .gesture(doubleTapResetGesture)
     }
 }

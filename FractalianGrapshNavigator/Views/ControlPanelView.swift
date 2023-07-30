@@ -17,6 +17,7 @@ struct ControlPanelView: View {
     @Binding var genEdgesCount: String
     @Binding var defaultDepth: String
     @Binding var graphMode: GraphMode
+    @Binding var graphStyle: GraphStyle
     @Binding var disablePosUpdate: Bool
     @Binding var nodeSpacing: CGFloat
     @Binding var depthSpacing: CGFloat
@@ -65,11 +66,11 @@ struct ControlPanelView: View {
     @ViewBuilder
     private func makeFullPanel() -> some View {
         VStack(alignment: .center, spacing: 16) {
-            Text("Graph settings")
+            Text("Settings")
                 .font(.title3)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text("Graph input source")
+                Text("Input source")
                     .font(.caption)
                     .padding(.horizontal, 8)
 
@@ -78,6 +79,20 @@ struct ControlPanelView: View {
                         .tag(GraphMode.file)
                     Text("Generated")
                         .tag(GraphMode.generated)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+            }
+            
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Display style")
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+
+                Picker("", selection: $graphStyle.animation()) {
+                    Text("Column")
+                        .tag(GraphStyle.column)
+                    Text("Stack")
+                        .tag(GraphStyle.stack)
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }

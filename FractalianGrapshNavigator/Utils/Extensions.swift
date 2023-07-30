@@ -11,6 +11,10 @@ extension Collection {
     func printing(_ handler: (Element) -> Void) -> [Element] {
         map { handler($0); return $0 }
     }
+    func item(at index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
+    }
+
 }
 
 extension Collection where Element: Hashable {

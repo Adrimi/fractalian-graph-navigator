@@ -14,6 +14,7 @@ struct Graph {
 
 struct Node: Hashable, Equatable {
     let id: String
+    var depth: Int?
     var children: [Node] = []
     var action: (() -> Void)?
 
@@ -36,6 +37,10 @@ extension Node {
         CollectionOfOne(self) + children.reduce(children) { partialResult, node in
             partialResult + node.withAllTree()
         }
+    }
+    
+    var idDepth: String {
+        "\(id) (\(depth ?? 0))"
     }
 }
 

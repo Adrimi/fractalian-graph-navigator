@@ -12,10 +12,16 @@ enum GraphMode: String, Hashable {
     case generated
 }
 
+enum GraphStyle: String, Hashable {
+    case column
+    case stack
+}
+
 struct MainView: View {
     @Namespace var geometry
 
     @AppStorage("graphMode") var graphMode: GraphMode = .file
+    @AppStorage("graphStyle") var graphStyle: GraphStyle = .stack
     @AppStorage("genNodesCount") var genNodesCount: String = "100"
     @AppStorage("genEdgesCount") var genEdgesCount: String = "400"
     @AppStorage("defaultDepth") var defaultDepth: String = "3"
@@ -26,7 +32,7 @@ struct MainView: View {
     @State var focusedNode: Node?
     @State var visibleEdges: [Edge] = []
     @State var nodePositions: [NodePosition] = []
-    @State var depth: Int = 2
+    @State var depth: Int = 3
     @State var isPresentingGeneratePanel: Bool = false
     @State var isPresentingError: Bool = false
     @State var error: GraphError? = nil
@@ -52,6 +58,7 @@ struct MainView: View {
                 genEdgesCount: $genEdgesCount,
                 defaultDepth: $defaultDepth,
                 graphMode: $graphMode,
+                graphStyle: $graphStyle,
                 disablePosUpdate: $disablePosUpdate,
                 nodeSpacing: $nodeSpacing.asCGFloat,
                 depthSpacing: $depthSpacing.asCGFloat,
@@ -65,6 +72,7 @@ struct MainView: View {
             )
 
             GraphView(
+                graphStyle: $graphStyle,
                 nodePositions: $nodePositions,
                 visibleEdges: $visibleEdges,
                 disablePosUpdate: $disablePosUpdate,
@@ -122,7 +130,7 @@ struct MainView: View {
         }
         Task(priority: .background) {
             do {
-//                self.focusedNode = nil
+                self.focusedNode = nil
                 self.graph = try await graphFromSelectedSource()
                 try await buildGraphStructure()
                 withAnimation {
@@ -202,13 +210,14 @@ struct MainView: View {
             .map(\.target)
             .map { target in
                 let children = createChildrenTree(id: target, depth: depth - 1)
-                return createNode(target, children: children)
+                return createNode(target, children: children, depth: depth)
             }
     }
 
-    private func createNode(_ id: String, children: [Node] = []) -> Node {
+    private func createNode(_ id: String, children: [Node] = [], depth: Int? = nil) -> Node {
         var node = Node(id: id, children: children)
         node.action = { self.focusedNode = node }
+        node.depth = depth
         return node
     }
 
